@@ -6,26 +6,20 @@ namespace BitMusic.Settings;
 [XmlRoot]
 public class XmlSettings
 {
-    [XmlElement]
+    [XmlElement("Channel")]
     public string Channel = string.Empty;
 
-    [XmlElement]
-    public int VolumeUpBits;
+    [XmlElement("Volume")]
+    public XmlTypeSetting Volume = new()
+    {
+        Steps = new double[] { 0, 2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }
+    };
 
-    [XmlElement]
-    public int VolumeDownBits;
-
-    [XmlElement]
-    public int SpeedUpBits;
-
-    [XmlElement]
-    public int SpeedDownBits;
-
-    [XmlElement]
-    public string VolumeSteps = "0,2,5,10,20,30,40,50,60,70,80,90,100";
-
-    [XmlElement]
-    public string SpeedSteps = "0,20,40,60,80,100,120,140,160,180,200";
+    [XmlElement("Speed")]
+    public XmlTypeSetting Speed = new()
+    {
+        Steps = new double[] { 0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200 }
+    };
 
     [XmlArray("AudioFiles")]
     [XmlArrayItem("AudioFile")]

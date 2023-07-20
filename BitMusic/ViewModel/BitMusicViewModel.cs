@@ -128,6 +128,22 @@ public class BitMusicViewModel : ObservableRecipient
         get => _settingsVolumeDown;
         set => SetProperty(ref _settingsVolumeDown, value);
     }
+    
+    private string _settingsVolumeMax = string.Empty;
+
+    public string SettingsVolumeMax
+    {
+        get => _settingsVolumeMax;
+        set => SetProperty(ref _settingsVolumeMax, value);
+    }
+    
+    private string _settingsVolumeMin = string.Empty;
+
+    public string SettingsVolumeMin
+    {
+        get => _settingsVolumeMin;
+        set => SetProperty(ref _settingsVolumeMin, value);
+    }
 
     private string _settingsVolumeSteps = string.Empty;
 
@@ -151,6 +167,22 @@ public class BitMusicViewModel : ObservableRecipient
     {
         get => _settingsSpeedDown;
         set => SetProperty(ref _settingsSpeedDown, value);
+    }
+    
+    private string _settingsSpeedMax = string.Empty;
+
+    public string SettingsSpeedMax
+    {
+        get => _settingsSpeedMax;
+        set => SetProperty(ref _settingsSpeedMax, value);
+    }
+    
+    private string _settingsSpeedMin = string.Empty;
+
+    public string SettingsSpeedMin
+    {
+        get => _settingsSpeedMin;
+        set => SetProperty(ref _settingsSpeedMin, value);
     }
 
     private string _settingsSpeedSteps = string.Empty;
@@ -192,10 +224,10 @@ public class BitMusicViewModel : ObservableRecipient
         _settingsHandler = new SettingsHandler(settingsFile);
 
         _textBoxLogger = new TextBoxLogger(this);
-        _botInstance = new BotInstance("justinfan1234", "1234");
-        _bitHandler = new BitHandler(_textBoxLogger, _settingsHandler, _botInstance);
-
         _musicPlayer = new MusicPlayer(this, _textBoxLogger);
+        
+        _botInstance = new BotInstance("justinfan1234", "1234");
+        _bitHandler = new BitHandler(this, _textBoxLogger, _botInstance, _settingsHandler);
 
         _botInstance.OnNewIrcNamReply += NewIrcNamReply;
 
@@ -235,12 +267,16 @@ public class BitMusicViewModel : ObservableRecipient
     private void LoadSettings()
     {
         ChannelTextBoxText = _settingsHandler.ActiveSettings.Channel;
-        SettingsVolumeUp = _settingsHandler.ActiveSettings.VolumeUpBits.ToString();
-        SettingsVolumeDown = _settingsHandler.ActiveSettings.VolumeDownBits.ToString();
-        SettingsVolumeSteps = _settingsHandler.ActiveSettings.VolumeSteps;
-        SettingsSpeedUp = _settingsHandler.ActiveSettings.SpeedUpBits.ToString();
-        SettingsSpeedDown = _settingsHandler.ActiveSettings.SpeedDownBits.ToString();
-        SettingsSpeedSteps = _settingsHandler.ActiveSettings.SpeedSteps;
+        SettingsVolumeUp = _settingsHandler.ActiveSettings.Volume.Up.ToString();
+        SettingsVolumeDown = _settingsHandler.ActiveSettings.Volume.Down.ToString();
+        SettingsVolumeMax = _settingsHandler.ActiveSettings.Volume.Max.ToString();
+        SettingsVolumeMin = _settingsHandler.ActiveSettings.Volume.Min.ToString();
+        SettingsVolumeSteps = _settingsHandler.ActiveSettings.Volume.StepsString;
+        SettingsSpeedUp = _settingsHandler.ActiveSettings.Speed.Up.ToString();
+        SettingsSpeedDown = _settingsHandler.ActiveSettings.Speed.Down.ToString();
+        SettingsSpeedMax = _settingsHandler.ActiveSettings.Speed.Max.ToString();
+        SettingsSpeedMin = _settingsHandler.ActiveSettings.Speed.Min.ToString();
+        SettingsSpeedSteps = _settingsHandler.ActiveSettings.Speed.StepsString;
 
         SongList = new ObservableCollection<SongItem>(
             _settingsHandler.ActiveSettings.AudioFiles.Select(path => new SongItem(path))
@@ -261,21 +297,33 @@ public class BitMusicViewModel : ObservableRecipient
     {
         _settingsHandler.ActiveSettings.Channel = ChannelTextBoxText;
 
-        _settingsHandler.ActiveSettings.VolumeUpBits = int.TryParse(SettingsVolumeUp, out int settingsVolumeUp)
+        _settingsHandler.ActiveSettings.Volume.Up = int.TryParse(SettingsVolumeUp, out int settingsVolumeUp)
             ? settingsVolumeUp
             : 0;
-        _settingsHandler.ActiveSettings.VolumeDownBits = int.TryParse(SettingsVolumeDown, out int settingsVolumeDown)
+        _settingsHandler.ActiveSettings.Volume.Down = int.TryParse(SettingsVolumeDown, out int settingsVolumeDown)
             ? settingsVolumeDown
             : 0;
-        _settingsHandler.ActiveSettings.VolumeSteps = SettingsVolumeSteps;
+        _settingsHandler.ActiveSettings.Volume.Max= int.TryParse(SettingsVolumeMax, out int settingsVolumeMax)
+            ? settingsVolumeMax
+            : 0;
+        _settingsHandler.ActiveSettings.Volume.Min = int.TryParse(SettingsVolumeMin, out int settingsVolumeMin)
+            ? settingsVolumeMin
+            : 0;
+        _settingsHandler.ActiveSettings.Volume.StepsString = SettingsVolumeSteps;
 
-        _settingsHandler.ActiveSettings.SpeedUpBits = int.TryParse(SettingsSpeedUp, out int settingsSpeedUp)
+        _settingsHandler.ActiveSettings.Speed.Up = int.TryParse(SettingsSpeedUp, out int settingsSpeedUp)
             ? settingsSpeedUp
             : 0;
-        _settingsHandler.ActiveSettings.SpeedDownBits = int.TryParse(SettingsSpeedDown, out int settingsSpeedDown)
+        _settingsHandler.ActiveSettings.Speed.Down = int.TryParse(SettingsSpeedDown, out int settingsSpeedDown)
             ? settingsSpeedDown
             : 0;
-        _settingsHandler.ActiveSettings.SpeedSteps = SettingsSpeedSteps;
+        _settingsHandler.ActiveSettings.Speed.Max= int.TryParse(SettingsSpeedMax, out int settingsSpeedMax)
+            ? settingsSpeedMax
+            : 0;
+        _settingsHandler.ActiveSettings.Speed.Min = int.TryParse(SettingsSpeedMin, out int settingsSpeedMin)
+            ? settingsSpeedMin
+            : 0;
+        _settingsHandler.ActiveSettings.Speed.StepsString = SettingsSpeedSteps;
 
         _settingsHandler.ActiveSettings.AudioFiles = SongList.Select(songItem => songItem.FileInfo.FullName).ToList();
 
