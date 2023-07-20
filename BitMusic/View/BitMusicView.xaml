@@ -1,0 +1,176 @@
+﻿<Window x:Class="BitMusic.View.BitMusicView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:BitMusic.ViewModel"
+        xmlns:bitMusic="clr-namespace:BitMusic"
+        xmlns:helper="clr-namespace:BitMusic.Helper"
+        mc:Ignorable="d"
+        Title="Bit Music"
+        SizeToContent="Height" Width="450"
+        ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance Type=viewModel:BitMusicViewModel,IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20px" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="150px" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="20px" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" VerticalAlignment="Center"
+                          IsChecked="{Binding ShuffleCheckbox}">
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                    </CheckBox.LayoutTransform>
+                    Shuffle
+                </CheckBox>
+                <CheckBox Grid.Column="1" VerticalAlignment="Center"
+                          IsChecked="{Binding RepeatCheckbox}">
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                    </CheckBox.LayoutTransform>
+                    Repeat song
+                </CheckBox>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="0" Height="25px">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding PlayPauseButton}">
+                    Play/Pause
+                </Button>
+                <Button Grid.Column="1" Command="{Binding SkipButton}">
+                    Skip
+                </Button>
+            </Grid>
+
+            <Label Grid.Column="0" Grid.Row="2">Current volume</Label>
+            <Slider Grid.Column="1" Grid.Row="2"
+                    Minimum="0" Maximum="100"
+                    Ticks="{Binding SettingsVolumeSteps}"
+                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"
+                    Value="{Binding VolumeSlider}" />
+
+            <Label Grid.Column="0" Grid.Row="3">Current speed</Label>
+            <Slider Grid.Column="1" Grid.Row="3"
+                    Minimum="0" Maximum="200"
+                    Ticks="{Binding SettingsSpeedSteps}"
+                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"
+                    Value="{Binding SpeedSlider}">
+            </Slider>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="150px" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
+            <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
+
+            <Label Grid.Row="1" Grid.Column="0">Channel:</Label>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding ChannelTextBoxText}" />
+
+            <Label Grid.Row="2" Grid.Column="0">Increase volume bits:</Label>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Text="{Binding SettingsVolumeUp}"
+                     HorizontalContentAlignment="Right" />
+
+            <Label Grid.Row="3" Grid.Column="0">Decrease volume bits:</Label>
+            <TextBox Grid.Row="3" Grid.Column="1"
+                     Text="{Binding SettingsVolumeDown}"
+                     HorizontalContentAlignment="Right" />
+
+            <Label Grid.Row="4" Grid.Column="0">Volume steps (between 0 and 100):</Label>
+            <TextBox Grid.Row="4" Grid.Column="1"
+                     Text="{Binding SettingsVolumeSteps}" />
+
+            <Label Grid.Row="5" Grid.Column="0">Increase speed bits:</Label>
+            <TextBox Grid.Row="5" Grid.Column="1"
+                     Text="{Binding SettingsSpeedUp}"
+                     HorizontalContentAlignment="Right" />
+
+            <Label Grid.Row="6" Grid.Column="0">Decrease speed bits:</Label>
+            <TextBox Grid.Row="6" Grid.Column="1"
+                     Text="{Binding SettingsSpeedDown}"
+                     HorizontalContentAlignment="Right" />
+
+            <Label Grid.Row="7" Grid.Column="0">Speed steps (between 0 and 200):</Label>
+            <TextBox Grid.Row="7" Grid.Column="1"
+                     Text="{Binding SettingsSpeedSteps}" />
+
+            <Label Grid.Row="8" Grid.Column="0">Songs:</Label>
+            <Button Grid.Row="8" Grid.Column="1" HorizontalContentAlignment="Center"
+                    Command="{Binding SongAddNewButton}">
+                Add new Song
+            </Button>
+            <ListBox Grid.Row="9" Grid.Column="1"
+                     ItemsSource="{Binding SongList}"
+                     SelectionMode="Extended">
+                <ListBox.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding SongItemDeleteKey}" />
+                </ListBox.InputBindings>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding FileName}" Padding="0px" Margin="0px"
+                               Background="{Binding Background}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Grid>
+        <Button Grid.Row="4" Command="{Binding SettingsSaveButton}" Padding="5px">
+            Save and apply settings
+        </Button>
+
+        <TextBox Grid.Row="5" IsReadOnly="True" Text="{Binding TextBoxText}"
+                 helper:TextBoxUtilities.AlwaysScrollToEnd="True" />
+
+
+    </Grid>
+</Window>
