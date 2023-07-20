@@ -1,5 +1,4 @@
-﻿using System;
-using BitMusic.Helper;
+﻿using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.IrcBot.Irc.DataTypes.FromTwitch;
 using BitMusic.Settings;
