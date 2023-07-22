@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BitMusic;
@@ -12,14 +11,6 @@ public class SongItem : ObservableRecipient
     {
         get => _isSelected;
         set => SetProperty(ref _isSelected, value);
-    }
-
-    private Brush _background;
-
-    public Brush Background
-    {
-        get => _background;
-        private set => SetProperty(ref _background, value);
     }
 
     private string _fileName = string.Empty;
