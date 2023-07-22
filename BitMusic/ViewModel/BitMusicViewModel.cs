@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -16,9 +17,6 @@ namespace BitMusic.ViewModel;
 public class BitMusicViewModel : ObservableRecipient
 {
     #region RelayCommandsForButtons
-
-    private IRelayCommand? _connectButton;
-    public IRelayCommand ConnectButton => _connectButton ??= new RelayCommand(Connect);
 
     private IRelayCommand? _playPauseButton;
     public IRelayCommand PlayPauseButton => _playPauseButton ??= new RelayCommand(_musicPlayer.PlayPause);
@@ -40,22 +38,6 @@ public class BitMusicViewModel : ObservableRecipient
     #endregion
 
     #region Bound Properties
-
-    private Brush _connectButtonBackground = ConnectedButtonBackgroundNotConnected;
-
-    private static readonly Brush ConnectedButtonBackgroundNotConnected = new SolidColorBrush();
-
-    private static readonly Brush ConnectedButtonBackgroundConnected =
-        new SolidColorBrush(Color.FromArgb(128, 0, 128, 0));
-
-    private static readonly Brush ConnectedButtonBackgroundConnectionFailed =
-        new SolidColorBrush(Color.FromArgb(128, 128, 0, 0));
-
-    public Brush ConnectButtonBackground
-    {
-        get => _connectButtonBackground;
-        private set => SetProperty(ref _connectButtonBackground, value);
-    }
 
     private bool _shuffleCheckbox = true;
 
@@ -128,7 +110,7 @@ public class BitMusicViewModel : ObservableRecipient
         get => _settingsVolumeDown;
         set => SetProperty(ref _settingsVolumeDown, value);
     }
-    
+
     private string _settingsVolumeMax = string.Empty;
 
     public string SettingsVolumeMax
@@ -136,13 +118,29 @@ public class BitMusicViewModel : ObservableRecipient
         get => _settingsVolumeMax;
         set => SetProperty(ref _settingsVolumeMax, value);
     }
-    
+
     private string _settingsVolumeMin = string.Empty;
 
     public string SettingsVolumeMin
     {
         get => _settingsVolumeMin;
         set => SetProperty(ref _settingsVolumeMin, value);
+    }
+
+    private string _settingsVolumeMaxText = string.Empty;
+
+    public string SettingsVolumeMaxText
+    {
+        get => _settingsVolumeMaxText;
+        set => SetProperty(ref _settingsVolumeMaxText, value);
+    }
+
+    private string _settingsVolumeMinText = string.Empty;
+
+    public string SettingsVolumeMinText
+    {
+        get => _settingsVolumeMinText;
+        set => SetProperty(ref _settingsVolumeMinText, value);
     }
 
     private string _settingsVolumeSteps = string.Empty;
@@ -168,7 +166,7 @@ public class BitMusicViewModel : ObservableRecipient
         get => _settingsSpeedDown;
         set => SetProperty(ref _settingsSpeedDown, value);
     }
-    
+
     private string _settingsSpeedMax = string.Empty;
 
     public string SettingsSpeedMax
@@ -176,13 +174,29 @@ public class BitMusicViewModel : ObservableRecipient
         get => _settingsSpeedMax;
         set => SetProperty(ref _settingsSpeedMax, value);
     }
-    
+
     private string _settingsSpeedMin = string.Empty;
 
     public string SettingsSpeedMin
     {
         get => _settingsSpeedMin;
         set => SetProperty(ref _settingsSpeedMin, value);
+    }
+
+    private string _settingsSpeedMaxText = string.Empty;
+
+    public string SettingsSpeedMaxText
+    {
+        get => _settingsSpeedMaxText;
+        set => SetProperty(ref _settingsSpeedMaxText, value);
+    }
+
+    private string _settingsSpeedMinText = string.Empty;
+
+    public string SettingsSpeedMinText
+    {
+        get => _settingsSpeedMinText;
+        set => SetProperty(ref _settingsSpeedMinText, value);
     }
 
     private string _settingsSpeedSteps = string.Empty;
@@ -212,22 +226,26 @@ public class BitMusicViewModel : ObservableRecipient
     private readonly BitHandler _bitHandler;
 
     private readonly MusicPlayer _musicPlayer;
+    private readonly ObsFileWriter _obsFileWriter;
+
     //private readonly OBSWebsocket _ws;
 
     #endregion
 
-    #region Constructor
+    #region Constructor and Overrides
 
     public BitMusicViewModel()
     {
         FileInfo settingsFile = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.xml"));
+        FileInfo obsFile = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "obs.txt"));
         _settingsHandler = new SettingsHandler(settingsFile);
 
         _textBoxLogger = new TextBoxLogger(this);
         _musicPlayer = new MusicPlayer(this, _textBoxLogger);
-        
+
         _botInstance = new BotInstance("justinfan1234", "1234");
         _bitHandler = new BitHandler(this, _textBoxLogger, _botInstance, _settingsHandler);
+        _obsFileWriter = new ObsFileWriter(_textBoxLogger, _settingsHandler, obsFile);
 
         _botInstance.OnNewIrcNamReply += NewIrcNamReply;
 
@@ -236,6 +254,14 @@ public class BitMusicViewModel : ObservableRecipient
         //_ws = new OBSWebsocket();
         //_ws.ConnectAsync("ws://localhost:4455", "");
         //_ws.Connected += WsOnConnected;
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(VolumeSlider) or nameof(SpeedSlider))
+            _obsFileWriter.UpdateText(VolumeSlider, SpeedSlider);
+
+        base.OnPropertyChanged(e);
     }
 
     //private void WsOnConnected(object? sender, EventArgs e)
@@ -247,22 +273,7 @@ public class BitMusicViewModel : ObservableRecipient
 
     #endregion
 
-    #region Binding Methods
-
-    private void Connect()
-    {
-        if (string.IsNullOrEmpty(ChannelTextBoxText))
-            return;
-
-        if (ConnectButtonBackground == ConnectedButtonBackgroundConnected)
-        {
-        }
-
-        _botInstance.Channels.Set(ChannelTextBoxText);
-
-        _textBoxLogger.WriteLine("Joining...");
-        ConnectButtonBackground = ConnectedButtonBackgroundConnected;
-    }
+    #region Methods
 
     private void LoadSettings()
     {
@@ -271,16 +282,22 @@ public class BitMusicViewModel : ObservableRecipient
         SettingsVolumeDown = _settingsHandler.ActiveSettings.Volume.Down.ToString();
         SettingsVolumeMax = _settingsHandler.ActiveSettings.Volume.Max.ToString();
         SettingsVolumeMin = _settingsHandler.ActiveSettings.Volume.Min.ToString();
+        SettingsVolumeMaxText = _settingsHandler.ActiveSettings.Volume.MaxText;
+        SettingsVolumeMinText = _settingsHandler.ActiveSettings.Volume.MinText;
         SettingsVolumeSteps = _settingsHandler.ActiveSettings.Volume.StepsString;
         SettingsSpeedUp = _settingsHandler.ActiveSettings.Speed.Up.ToString();
         SettingsSpeedDown = _settingsHandler.ActiveSettings.Speed.Down.ToString();
         SettingsSpeedMax = _settingsHandler.ActiveSettings.Speed.Max.ToString();
         SettingsSpeedMin = _settingsHandler.ActiveSettings.Speed.Min.ToString();
+        SettingsSpeedMaxText = _settingsHandler.ActiveSettings.Speed.MaxText;
+        SettingsSpeedMinText = _settingsHandler.ActiveSettings.Speed.MinText;
         SettingsSpeedSteps = _settingsHandler.ActiveSettings.Speed.StepsString;
 
         SongList = new ObservableCollection<SongItem>(
             _settingsHandler.ActiveSettings.AudioFiles.Select(path => new SongItem(path))
         );
+
+        _obsFileWriter.UpdateText(VolumeSlider, SpeedSlider);
 
         if (!_botInstance.Channels.Contains(ChannelTextBoxText))
         {
@@ -303,12 +320,14 @@ public class BitMusicViewModel : ObservableRecipient
         _settingsHandler.ActiveSettings.Volume.Down = int.TryParse(SettingsVolumeDown, out int settingsVolumeDown)
             ? settingsVolumeDown
             : 0;
-        _settingsHandler.ActiveSettings.Volume.Max= int.TryParse(SettingsVolumeMax, out int settingsVolumeMax)
+        _settingsHandler.ActiveSettings.Volume.Max = int.TryParse(SettingsVolumeMax, out int settingsVolumeMax)
             ? settingsVolumeMax
             : 0;
         _settingsHandler.ActiveSettings.Volume.Min = int.TryParse(SettingsVolumeMin, out int settingsVolumeMin)
             ? settingsVolumeMin
             : 0;
+        _settingsHandler.ActiveSettings.Volume.MaxText = SettingsVolumeMaxText;
+        _settingsHandler.ActiveSettings.Volume.MinText = SettingsVolumeMinText;
         _settingsHandler.ActiveSettings.Volume.StepsString = SettingsVolumeSteps;
 
         _settingsHandler.ActiveSettings.Speed.Up = int.TryParse(SettingsSpeedUp, out int settingsSpeedUp)
@@ -317,12 +336,14 @@ public class BitMusicViewModel : ObservableRecipient
         _settingsHandler.ActiveSettings.Speed.Down = int.TryParse(SettingsSpeedDown, out int settingsSpeedDown)
             ? settingsSpeedDown
             : 0;
-        _settingsHandler.ActiveSettings.Speed.Max= int.TryParse(SettingsSpeedMax, out int settingsSpeedMax)
+        _settingsHandler.ActiveSettings.Speed.Max = int.TryParse(SettingsSpeedMax, out int settingsSpeedMax)
             ? settingsSpeedMax
             : 0;
         _settingsHandler.ActiveSettings.Speed.Min = int.TryParse(SettingsSpeedMin, out int settingsSpeedMin)
             ? settingsSpeedMin
             : 0;
+        _settingsHandler.ActiveSettings.Speed.MaxText = SettingsSpeedMaxText;
+        _settingsHandler.ActiveSettings.Speed.MinText = SettingsSpeedMinText;
         _settingsHandler.ActiveSettings.Speed.StepsString = SettingsSpeedSteps;
 
         _settingsHandler.ActiveSettings.AudioFiles = SongList.Select(songItem => songItem.FileInfo.FullName).ToList();
@@ -355,10 +376,6 @@ public class BitMusicViewModel : ObservableRecipient
         foreach (SongItem songItem in songItemsToDelete)
             SongList.Remove(songItem);
     }
-
-    #endregion
-
-    #region Methods
 
     private void NewIrcNamReply(string roomName, string userName)
     {

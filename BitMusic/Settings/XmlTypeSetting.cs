@@ -17,6 +17,12 @@ public class XmlTypeSetting
 
     [XmlElement("Min")]
     public int Min;
+    
+    [XmlElement("MaxText")]
+    public string MaxText = string.Empty;
+
+    [XmlElement("MinText")]
+    public string MinText = string.Empty;
 
     [XmlArray("Steps")]
     [XmlArrayItem("Step")]
