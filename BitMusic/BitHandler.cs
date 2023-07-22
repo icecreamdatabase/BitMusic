@@ -1,4 +1,5 @@
-﻿using BitMusic.Helper;
+﻿using System.Windows;
+using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.IrcBot.Irc.DataTypes.FromTwitch;
 using BitMusic.Settings;
@@ -28,7 +29,9 @@ public class BitHandler
 
     #region Methods
 
-    private void NewIrcPrivMsg(IrcPrivMsg ircPrivMsg)
+    private void NewIrcPrivMsg(IrcPrivMsg ircPrivMsg) => Application.Current.Dispatcher.Invoke(HandleBits, ircPrivMsg);
+
+    private void HandleBits(IrcPrivMsg ircPrivMsg)
     {
         _textBoxLogger.WriteLine($"⌨ {ircPrivMsg.UserName}: {ircPrivMsg.Message}");
 
