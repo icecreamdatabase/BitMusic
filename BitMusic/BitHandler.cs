@@ -30,7 +30,7 @@ public class BitHandler
 
     private void NewIrcPrivMsg(IrcPrivMsg ircPrivMsg)
     {
-        _textBoxLogger.WriteLine($"⌨ {ircPrivMsg.RoomName}: {ircPrivMsg.Message}");
+        _textBoxLogger.WriteLine($"⌨ {ircPrivMsg.UserName}: {ircPrivMsg.Message}");
 
         if (ircPrivMsg.Bits == null)
             return;
