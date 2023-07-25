@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
 using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.Settings;
@@ -22,7 +21,7 @@ public class BitMusicViewModel : ObservableRecipient
     public IRelayCommand PlayPauseButton => _playPauseButton ??= new RelayCommand(_musicPlayer.PlayPause);
 
     private IRelayCommand? _skipButton;
-    public IRelayCommand SkipButton => _skipButton ??= new RelayCommand(_musicPlayer.NextSong);
+    public IRelayCommand SkipButton => _skipButton ??= new RelayCommand(SkipSong);
 
     private IRelayCommand? _settingsSaveButton;
     public IRelayCommand SettingsSaveButton => _settingsSaveButton ??= new RelayCommand(SaveSettings);
@@ -93,6 +92,14 @@ public class BitMusicViewModel : ObservableRecipient
     {
         get => _textBoxText;
         set => SetProperty(ref _textBoxText, value);
+    }
+
+    private string _settingsSkip = string.Empty;
+
+    public string SettingsSkip
+    {
+        get => _settingsSkip;
+        set => SetProperty(ref _settingsSkip, value);
     }
 
     private string _settingsVolumeUp = string.Empty;
@@ -278,6 +285,7 @@ public class BitMusicViewModel : ObservableRecipient
     private void LoadSettings()
     {
         ChannelTextBoxText = _settingsHandler.ActiveSettings.Channel;
+        SettingsSkip = _settingsHandler.ActiveSettings.Skip.ToString();
         SettingsVolumeUp = _settingsHandler.ActiveSettings.Volume.Up.ToString();
         SettingsVolumeDown = _settingsHandler.ActiveSettings.Volume.Down.ToString();
         SettingsVolumeMax = _settingsHandler.ActiveSettings.Volume.Max.ToString();
@@ -313,6 +321,10 @@ public class BitMusicViewModel : ObservableRecipient
     private void SaveSettings()
     {
         _settingsHandler.ActiveSettings.Channel = ChannelTextBoxText;
+
+        _settingsHandler.ActiveSettings.Skip = int.TryParse(SettingsSkip, out int settingsSkip)
+            ? settingsSkip
+            : 0;
 
         _settingsHandler.ActiveSettings.Volume.Up = int.TryParse(SettingsVolumeUp, out int settingsVolumeUp)
             ? settingsVolumeUp
@@ -352,6 +364,8 @@ public class BitMusicViewModel : ObservableRecipient
         LoadSettings();
         //_musicPlayer.Reload();
     }
+
+    public void SkipSong() => _musicPlayer.NextSong();
 
     private void SongAddNew()
     {
