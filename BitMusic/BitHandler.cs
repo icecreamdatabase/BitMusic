@@ -48,47 +48,67 @@ public class BitHandler
             }
             else if (bits == _settingsHandler.ActiveSettings.Volume.Up)
             {
-                _textBoxLogger.WriteLine($"📻 Volume up ({_bitMusicViewModel.VolumeSlider})");
-                _bitMusicViewModel.VolumeSlider =
-                    _settingsHandler.ActiveSettings.Volume.GetNextStepValue(_bitMusicViewModel.VolumeSlider);
+                double oldVolume = _bitMusicViewModel.VolumeSlider;
+                double newVolume = _settingsHandler.ActiveSettings.Volume.GetNextStepValue(oldVolume);
+                
+                _textBoxLogger.WriteLine($"📻 Volume up ({oldVolume} --> {newVolume})");
+                _bitMusicViewModel.VolumeSlider = newVolume;
             }
             else if (bits == _settingsHandler.ActiveSettings.Volume.Down)
             {
-                _textBoxLogger.WriteLine($"📻 Volume down ({_bitMusicViewModel.VolumeSlider})");
-                _bitMusicViewModel.VolumeSlider =
-                    _settingsHandler.ActiveSettings.Volume.GetPreviousStepValue(_bitMusicViewModel.VolumeSlider);
+                double oldVolume = _bitMusicViewModel.VolumeSlider;
+                double newVolume = _settingsHandler.ActiveSettings.Volume.GetPreviousStepValue(oldVolume);
+                
+                _textBoxLogger.WriteLine($"📻 Volume down ({oldVolume} --> {newVolume})");
+                _bitMusicViewModel.VolumeSlider = newVolume;
             }
             else if (bits == _settingsHandler.ActiveSettings.Volume.Max)
             {
-                _textBoxLogger.WriteLine($"📻 Volume to max ({_bitMusicViewModel.VolumeSlider})");
-                _bitMusicViewModel.VolumeSlider = _settingsHandler.ActiveSettings.Volume.GetMaxStepValue();
+                double oldVolume = _bitMusicViewModel.VolumeSlider;
+                double newVolume = _settingsHandler.ActiveSettings.Volume.GetMaxStepValue();
+                
+                _textBoxLogger.WriteLine($"📻 Volume to max ({oldVolume} --> {newVolume})");
+                _bitMusicViewModel.VolumeSlider = newVolume;
             }
             else if (bits == _settingsHandler.ActiveSettings.Volume.Min)
             {
-                _textBoxLogger.WriteLine($"📻 Volume to min ({_bitMusicViewModel.VolumeSlider})");
-                _bitMusicViewModel.VolumeSlider = _settingsHandler.ActiveSettings.Volume.GetMinStepValue();
+                double oldVolume = _bitMusicViewModel.VolumeSlider;
+                double newVolume = _settingsHandler.ActiveSettings.Volume.GetMinStepValue();
+                
+                _textBoxLogger.WriteLine($"📻 Volume to min ({oldVolume} --> {newVolume})");
+                _bitMusicViewModel.VolumeSlider = newVolume;
             }
             else if (bits == _settingsHandler.ActiveSettings.Speed.Up)
             {
-                _textBoxLogger.WriteLine($"📻 Speed up ({_bitMusicViewModel.SpeedSlider})");
-                _bitMusicViewModel.SpeedSlider =
-                    _settingsHandler.ActiveSettings.Speed.GetNextStepValue(_bitMusicViewModel.SpeedSlider);
+                double oldSpeed = _bitMusicViewModel.SpeedSlider;
+                double newSpeed = _settingsHandler.ActiveSettings.Speed.GetNextStepValue(oldSpeed);
+                
+                _textBoxLogger.WriteLine($"📻 Speed up ({oldSpeed} --> {newSpeed})");
+                _bitMusicViewModel.SpeedSlider = newSpeed;
             }
             else if (bits == _settingsHandler.ActiveSettings.Speed.Down)
             {
-                _textBoxLogger.WriteLine($"📻 Speed down to ({_bitMusicViewModel.SpeedSlider})");
-                _bitMusicViewModel.SpeedSlider =
-                    _settingsHandler.ActiveSettings.Speed.GetPreviousStepValue(_bitMusicViewModel.SpeedSlider);
+                double oldSpeed = _bitMusicViewModel.SpeedSlider;
+                double newSpeed = _settingsHandler.ActiveSettings.Speed.GetPreviousStepValue(oldSpeed);
+                
+                _textBoxLogger.WriteLine($"📻 Speed down ({oldSpeed} --> {newSpeed})");
+                _bitMusicViewModel.SpeedSlider = newSpeed;
             }
             else if (bits == _settingsHandler.ActiveSettings.Speed.Max)
             {
-                _textBoxLogger.WriteLine($"📻 Speed to max ({_bitMusicViewModel.SpeedSlider})");
-                _bitMusicViewModel.SpeedSlider = _settingsHandler.ActiveSettings.Speed.GetMaxStepValue();
+                double oldSpeed = _bitMusicViewModel.SpeedSlider;
+                double newSpeed = _settingsHandler.ActiveSettings.Speed.GetMaxStepValue();
+                
+                _textBoxLogger.WriteLine($"📻 Speed to max ({oldSpeed} --> {newSpeed})");
+                _bitMusicViewModel.SpeedSlider = newSpeed;
             }
             else if (bits == _settingsHandler.ActiveSettings.Speed.Min)
             {
-                _textBoxLogger.WriteLine($"📻 Speed to min ({_bitMusicViewModel.SpeedSlider})");
-                _bitMusicViewModel.SpeedSlider = _settingsHandler.ActiveSettings.Speed.GetMinStepValue();
+                double oldSpeed = _bitMusicViewModel.SpeedSlider;
+                double newSpeed = _settingsHandler.ActiveSettings.Speed.GetMinStepValue();
+                
+                _textBoxLogger.WriteLine($"📻 Speed to min ({oldSpeed} --> {newSpeed})");
+                _bitMusicViewModel.SpeedSlider = newSpeed;
             }
         }
     }
