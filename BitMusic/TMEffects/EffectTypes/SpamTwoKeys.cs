@@ -3,15 +3,18 @@ using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
-public class SpamTwoKeys : SpamKey
+public class SpamTwoKeys : HoldKey
 {
     public string AhkKeyCode2 { get; }
+    public int HoldTimeMs { get; }
+    public int HoldTimeMsAhkKeyCode2 { get; }
 
     public SpamTwoKeys(int weight, string ahkKeyCode, string ahkKeyCode2, int activeTimeMs,
-        int holdTimeMs = 50, int releaseTimeMs = 50) :
-        base(weight, ahkKeyCode, activeTimeMs, holdTimeMs, releaseTimeMs)
+        int holdTimeMs = 50, int holdTimeMsAhkKeyCode2 = 50) : base(weight, ahkKeyCode, activeTimeMs)
     {
         AhkKeyCode2 = ahkKeyCode2;
+        HoldTimeMs = holdTimeMs;
+        HoldTimeMsAhkKeyCode2 = holdTimeMsAhkKeyCode2;
     }
 
     public override string GetConsoleOutput()
@@ -21,19 +24,17 @@ public class SpamTwoKeys : SpamKey
 
     public override void Execute(string processName)
     {
-        int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + ReleaseTimeMs));
+        int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + HoldTimeMsAhkKeyCode2 + 5 + 5));
 
         string code = $$"""
-                        IfWinActive ahk_exe {{processName}}"
-                        Loop, {{{repeatCount}}} {
-                            Send , {{{AhkKeyCode}} down}"
-                            Sleep, {{{HoldTimeMs}}}"
-                            Send , {{{AhkKeyCode}} up}"
-                            Sleep, {{{ReleaseTimeMs}}}"
-                            Send , {{{AhkKeyCode2}} down}"
-                            Sleep, {{{HoldTimeMs}}}"
-                            Send , {{{AhkKeyCode2}} up}"
-                            Sleep, {{{ReleaseTimeMs}}}"
+                        #IfWinActive ahk_exe {{processName}}
+                        Loop, {{repeatCount}} {
+                            Send , {{{AhkKeyCode}} down}
+                            Sleep, {{HoldTimeMs}}
+                            Send , {{{AhkKeyCode}} up}
+                            Send , {{{AhkKeyCode2}} down}
+                            Sleep, {{HoldTimeMsAhkKeyCode2}}
+                            Send , {{{AhkKeyCode2}} up}
                         }
                         """;
 

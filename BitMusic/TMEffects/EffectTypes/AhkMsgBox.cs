@@ -19,7 +19,7 @@ public class AhkMsgBox : EffectBase
     public override void Execute(string processName)
     {
         string code = $$"""
-                        IfWinActive ahk_exe {{processName}}"
+                        #IfWinActive ahk_exe {{processName}}"
                         MsgBox, {{Text}}
                         """;
 

@@ -19,8 +19,8 @@ public class PressKey : EffectBase
     public override void Execute(string processName)
     {
         string code = $$"""
-                        IfWinActive ahk_exe {{processName}}"
-                        Send , {{{AhkKeyCode}}}"
+                        #IfWinActive ahk_exe {{processName}}
+                        Send , {{{AhkKeyCode}}}
                         """;
 
         AhkHelper.ExecuteAhkScript(code);

@@ -20,10 +20,10 @@ public class HoldKey : PressKey
     public override void Execute(string processName)
     {
         string code =$$"""
-                 IfWinActive ahk_exe {{processName}}"
-                 Send , {{{AhkKeyCode}} down}"
-                 Sleep, {{{ActiveTimeMs}}}"
-                 Send , {{{AhkKeyCode}} up}"
+                 #IfWinActive ahk_exe {{processName}}
+                 Send , {{{AhkKeyCode}} down}
+                 Sleep, {{ActiveTimeMs}}
+                 Send , {{{AhkKeyCode}} up}
                  """;
         
         AhkHelper.ExecuteAhkScript(code);

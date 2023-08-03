@@ -8,7 +8,7 @@ public class SpamKey : HoldKey
     public int HoldTimeMs { get; }
     public int ReleaseTimeMs { get; }
 
-    public SpamKey(int weight, string ahkKeyCode, int activeTimeMs, int holdTimeMs = 50, int releaseTimeMs = 50) :
+    public SpamKey(int weight, string ahkKeyCode, int activeTimeMs, int holdTimeMs = 95, int releaseTimeMs = 5) :
         base(weight, ahkKeyCode, activeTimeMs)
     {
         HoldTimeMs = holdTimeMs;
@@ -25,12 +25,12 @@ public class SpamKey : HoldKey
         int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + ReleaseTimeMs));
 
         string code = $$"""
-                        IfWinActive ahk_exe {{processName}}"
-                        Loop, {{{repeatCount}}} {
-                            Send , {{{AhkKeyCode}} down}"
-                            Sleep, {{{HoldTimeMs}}}"
-                            Send , {{{AhkKeyCode}} up}"
-                            Sleep, {{{ReleaseTimeMs}}}"
+                        #IfWinActive ahk_exe {{processName}}
+                        Loop, {{repeatCount}} {
+                            Send , {{{AhkKeyCode}} down}
+                            Sleep, {{HoldTimeMs}}
+                            Send , {{{AhkKeyCode}} up}
+                            Sleep, {{ReleaseTimeMs}}
                         }
                         """;
 

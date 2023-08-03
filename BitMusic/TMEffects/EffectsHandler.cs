@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BitMusic.TMEffects.EffectHelper;
 using BitMusic.TMEffects.EffectTypes;
 
 namespace BitMusic.TMEffects;
@@ -19,12 +18,15 @@ public static class EffectsHandler
         new PressKey(1, "Numpad3"),
         new PressKey(1, "Numpad7"),
         
-        new HoldKey(1, "w", 500),
-        new HoldKey(1, "s", 500),
-        new HoldKey(1, "a", 500),
-        new HoldKey(1, "d", 500),
+        //new HoldKey(1, "w", 500),
+        //new HoldKey(1, "s", 500),
+        //new HoldKey(1, "a", 500),
+        //new HoldKey(1, "d", 500),
         new HoldKey(1, "Numpad0", 5000),
         
+        new SpamKey(1, "Numpad1", 5000),
+        new SpamKey(1, "Numpad2", 5000),
+        new SpamKey(1, "Numpad3", 5000),
         new SpamKey(1, "w", 2000),
         new SpamKey(1, "s", 2000),
         new SpamKey(1, "a", 2000),
@@ -33,9 +35,9 @@ public static class EffectsHandler
         new SpamTwoKeys(1, "w", "s", 2000),
         new SpamTwoKeys(1, "a", "d", 2000),
         
-        new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw90, 5000),
-        new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw180, 5000),
-        new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw270, 5000),
+        //new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw90, 5000),
+        //new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw180, 5000),
+        //new DisplayRotationEffect(1, 1, DisplayRotationHelper.Orientations.DegreesCw270, 5000),
         
         new AhkMsgBox(1, "Hi :)"),
     };
