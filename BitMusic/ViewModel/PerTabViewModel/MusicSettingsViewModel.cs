@@ -11,6 +11,8 @@ namespace BitMusic.ViewModel.PerTabViewModel;
 
 public class MusicSettingsViewModel : ObservableRecipient
 {
+    #region RelayCommandsForButtons
+
     private IRelayCommand? _songAddNewButton;
 
     public IRelayCommand SongAddNewButton => _songAddNewButton ??= new RelayCommand(SongAddNew);
@@ -19,6 +21,9 @@ public class MusicSettingsViewModel : ObservableRecipient
 
     public IRelayCommand SongItemDeleteKey => _songDeleteKey ??= new RelayCommand(SongDelete);
 
+    #endregion
+
+    #region Bound Properties
 
     private string _settingsSkip = string.Empty;
 
@@ -148,8 +153,15 @@ public class MusicSettingsViewModel : ObservableRecipient
         private set => SetProperty(ref _songList, value);
     }
 
+    #endregion
+
+    #region Properties and Fields
 
     private readonly BitMusicViewModel _bitMusicViewModel;
+
+    #endregion
+
+    #region Constructor and Overrides
 
     public MusicSettingsViewModel(BitMusicViewModel bitMusicViewModel)
     {
@@ -163,6 +175,10 @@ public class MusicSettingsViewModel : ObservableRecipient
 
         base.OnPropertyChanged(e);
     }
+
+    #endregion
+
+    #region Methods
 
     private void SongAddNew()
     {
@@ -254,4 +270,6 @@ public class MusicSettingsViewModel : ObservableRecipient
 
         settingsHandler.ActiveSettings.AudioFiles = SongList.Select(songItem => songItem.FileInfo.FullName).ToList();
     }
+
+    #endregion
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
@@ -9,14 +9,16 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BitMusic.ViewModel;
 
+[SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
 public class BitMusicViewModel : ObservableRecipient
 {
+    #region Properties and Fields
+
     public MainTabViewModel MainTabViewModel { get; }
     public MusicSettingsViewModel MusicSettingsViewModel { get; }
     public TmEffectsViewModel TmEffectsViewModel { get; }
 
-
-    #region Properties and Fields
+    public bool IsLoadingData { get; private set; }
 
     private readonly BotInstance _botInstance;
 
@@ -69,8 +71,6 @@ public class BitMusicViewModel : ObservableRecipient
     #endregion
 
     #region Methods
-    
-    public bool IsLoadingData { get; private set; }
 
     private void LoadSettings()
     {

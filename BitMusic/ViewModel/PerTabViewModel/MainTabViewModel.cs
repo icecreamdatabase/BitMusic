@@ -99,11 +99,17 @@ public class MainTabViewModel : ObservableRecipient
 
     #endregion
 
+    #region Properties and Fields
+
     private readonly BitMusicViewModel _bitMusicViewModel;
     private readonly TextBoxLogger _textBoxLogger;
     private readonly ObsFileWriter _obsFileWriter;
     private readonly MusicPlayer _musicPlayer;
     private readonly BotInstance _botInstance;
+
+    #endregion
+
+    #region Constructor and Overrides
 
     public MainTabViewModel(BitMusicViewModel bitMusicViewModel,
         TextBoxLogger textBoxLogger, ObsFileWriter obsFileWriter, MusicPlayer musicPlayer, BotInstance botInstance)
@@ -124,6 +130,10 @@ public class MainTabViewModel : ObservableRecipient
 
         base.OnPropertyChanged(e);
     }
+
+    #endregion
+
+    #region Methods
 
     public void SkipSong() => _musicPlayer.NextSong();
 
@@ -148,4 +158,6 @@ public class MainTabViewModel : ObservableRecipient
     {
         settingsHandler.ActiveSettings.Channel = ChannelTextBoxText;
     }
+
+    #endregion
 }
