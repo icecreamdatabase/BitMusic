@@ -123,7 +123,7 @@
             
             <Label Grid.Row="3" Grid.Column="0">Skip bits:</Label>
             <TextBox Grid.Row="3" Grid.Column="1"
-                     Text="{Binding SettingsSkip}"
+                     
                      HorizontalContentAlignment="Right" />
             
             <Label Grid.Row="5" Grid.Column="0">Increase volume bits:</Label>

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoHotkey.Interop" Version="1.0.0.1" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     </ItemGroup>
 
@@ -18,5 +19,7 @@
         <SubType>Designer</SubType>
       </Page>
     </ItemGroup>
+
+
 
 </Project>
