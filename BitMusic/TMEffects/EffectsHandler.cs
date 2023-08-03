@@ -66,7 +66,7 @@ public static class EffectsHandler
             randomIndexForWeightCalc -= effect.Weight;
         }
 
-        // No effect found with that weight or no effects where defined in the first place.
+        // No effect found with that weight or no effects are defined in the first place.
         return null;
     }
 
