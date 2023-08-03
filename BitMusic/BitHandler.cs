@@ -39,7 +39,7 @@ public class BitHandler
         if (ircPrivMsg.UserId == 38949074 && ircPrivMsg.Message.StartsWith("!tmtest"))
         {
             Thread.Sleep(10000);
-            TmKeybindHandling();
+            TmEffectsHandling(_settingsHandler.ActiveSettings.TmSettings.BitAmount);
         }
 
         if (ircPrivMsg.Bits == null)
@@ -50,14 +50,29 @@ public class BitHandler
         if (!int.TryParse(ircPrivMsg.Bits, out int bits))
             return;
 
+        TmEffectsHandling(bits);
+        MusicHandling(bits);
+    }
+
+    private void TmEffectsHandling(int bits)
+    {
+        if (bits == _settingsHandler.ActiveSettings.TmSettings.BitAmount)
+        {
+            string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
+            EffectBase? effectBase = EffectsHandler.ExecuteRandomEffectByWeight(processName);
+            if (effectBase != null)
+                _textBoxLogger.WriteLine(effectBase.GetConsoleOutput());
+            else
+                _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
+        }
+    }
+
+    private void MusicHandling(int bits)
+    {
         if (bits == _settingsHandler.ActiveSettings.Skip)
         {
             _textBoxLogger.WriteLine("📻 Skipping song");
             _bitMusicViewModel.MainTabViewModel.SkipSong();
-        }
-        else if (bits == _settingsHandler.ActiveSettings.TmSettings.BitAmount)
-        {
-            TmKeybindHandling();
         }
         else if (bits == _settingsHandler.ActiveSettings.Volume.Up)
         {
@@ -123,16 +138,6 @@ public class BitHandler
             _textBoxLogger.WriteLine($"📻 Speed to min ({oldSpeed} --> {newSpeed})");
             _bitMusicViewModel.MainTabViewModel.SpeedSlider = newSpeed;
         }
-    }
-
-    private void TmKeybindHandling()
-    {
-        string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
-        EffectBase? effectBase = EffectsHandler.ExecuteRandomEffectByWeight(processName);
-        if (effectBase != null)
-            _textBoxLogger.WriteLine(effectBase.GetConsoleOutput());
-        else
-            _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
     }
 
     #endregion
