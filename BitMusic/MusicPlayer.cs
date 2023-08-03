@@ -51,7 +51,7 @@ public class MusicPlayer
     {
         if (_currentFile != null)
         {
-            bool currentSongStillExists = _bitMusicViewModel.SongList
+            bool currentSongStillExists = _bitMusicViewModel.MusicSettingsViewModel.SongList
                 .Any(songItem =>
                     songItem.FileInfo.FullName.Equals(_currentFile.FullName, StringComparison.OrdinalIgnoreCase)
                 );
@@ -67,7 +67,7 @@ public class MusicPlayer
 
     public void NextSong()
     {
-        if (_bitMusicViewModel.SongList.Count == 0)
+        if (_bitMusicViewModel.MusicSettingsViewModel.SongList.Count == 0)
         {
             _currentFile = null;
             _isPlaying = false;
@@ -79,22 +79,22 @@ public class MusicPlayer
         int currentIndex = -1;
         if (_currentFile != null)
         {
-            SongItem? currentSongItem = _bitMusicViewModel.SongList
+            SongItem? currentSongItem = _bitMusicViewModel.MusicSettingsViewModel.SongList
                 .FirstOrDefault(songItem =>
                     songItem.FileInfo.FullName.Equals(_currentFile.FullName, StringComparison.OrdinalIgnoreCase)
                 );
             if (currentSongItem != null)
-                currentIndex = _bitMusicViewModel.SongList.IndexOf(currentSongItem);
+                currentIndex = _bitMusicViewModel.MusicSettingsViewModel.SongList.IndexOf(currentSongItem);
         }
 
         int nextIndex;
-        if (_bitMusicViewModel.RepeatCheckbox)
+        if (_bitMusicViewModel.MainTabViewModel.RepeatCheckbox)
         {
             nextIndex = currentIndex;
         }
-        else if (_bitMusicViewModel.ShuffleCheckbox)
+        else if (_bitMusicViewModel.MainTabViewModel.ShuffleCheckbox)
         {
-            nextIndex = _shuffleRandom.Next(0, _bitMusicViewModel.SongList.Count);
+            nextIndex = _shuffleRandom.Next(0, _bitMusicViewModel.MusicSettingsViewModel.SongList.Count);
             // Shuffle should not play the same song again.
             if (nextIndex == currentIndex)
                 nextIndex++;
@@ -104,10 +104,10 @@ public class MusicPlayer
             nextIndex = currentIndex + 1;
         }
 
-        nextIndex %= _bitMusicViewModel.SongList.Count;
+        nextIndex %= _bitMusicViewModel.MusicSettingsViewModel.SongList.Count;
 
 
-        PlaySong(_bitMusicViewModel.SongList[nextIndex].FileInfo);
+        PlaySong(_bitMusicViewModel.MusicSettingsViewModel.SongList[nextIndex].FileInfo);
     }
 
     private void PlaySong(FileInfo fileInfo)

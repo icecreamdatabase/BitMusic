@@ -14,6 +14,6 @@ public class TextBoxLogger
 
     public void WriteLine(string line)
     {
-        _bitMusicViewModel.TextBoxText += $"{line}{Environment.NewLine}";
+        _bitMusicViewModel.MainTabViewModel.TextBoxText += $"{line}{Environment.NewLine}";
     }
 }

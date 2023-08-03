@@ -9,15 +9,15 @@ public class XmlSettings
     [XmlElement("Channel")]
     public string Channel = string.Empty;
 
-    [XmlElement("Skip")]
-    public int Skip;
-
     [XmlElement("TmSettings")]
     public XmlTmSettings TmSettings = new()
     {
         ProcessName = "Trackmania.exe",
         BitAmount = 1234
     };
+
+    [XmlElement("Skip")]
+    public int Skip;
 
     [XmlElement("Volume")]
     public XmlTypeSetting Volume = new()

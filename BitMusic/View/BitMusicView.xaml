@@ -12,221 +12,266 @@
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type=viewModel:BitMusicViewModel,IsDesignTimeCreatable=True}">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20px" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="150px" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <TabControl>
+            <TabItem Header="Main">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="15px" />
+                        <RowDefinition MinHeight="350" Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="20px" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5px">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center"
+                                  IsChecked="{Binding MainTabViewModel.MusicEnabledCheckbox}"
+                                  HorizontalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                            </CheckBox.LayoutTransform>
+                            Music enabled
+                        </CheckBox>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center"
+                                  IsChecked="{Binding MainTabViewModel.EffectsEnabledCheckbox}"
+                                  HorizontalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                            </CheckBox.LayoutTransform>
+                            Effects enabled
+                        </CheckBox>
+                    </Grid>
 
-            <Grid Grid.Column="0" Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <CheckBox Grid.Column="0" VerticalAlignment="Center"
-                          IsChecked="{Binding ShuffleCheckbox}">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                    </CheckBox.LayoutTransform>
-                    Shuffle
-                </CheckBox>
-                <CheckBox Grid.Column="1" VerticalAlignment="Center"
-                          IsChecked="{Binding RepeatCheckbox}">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                    </CheckBox.LayoutTransform>
-                    Repeat song
-                </CheckBox>
-            </Grid>
-            <Grid Grid.Column="1" Grid.Row="0" Height="25px">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Command="{Binding PlayPauseButton}">
-                    Play/Pause
-                </Button>
-                <Button Grid.Column="1" Command="{Binding SkipButton}">
-                    Skip
-                </Button>
-            </Grid>
-
-            <Label Grid.Column="0" Grid.Row="2">Current volume</Label>
-            <Slider Grid.Column="1" Grid.Row="2"
-                    Minimum="0" Maximum="100"
-                    Ticks="{Binding SettingsVolumeSteps}"
-                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"
-                    Value="{Binding VolumeSlider}" />
-
-            <Label Grid.Column="0" Grid.Row="3">Current speed</Label>
-            <Slider Grid.Column="1" Grid.Row="3"
-                    Minimum="0" Maximum="200"
-                    Ticks="{Binding SettingsSpeedSteps}"
-                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"
-                    Value="{Binding SpeedSlider}">
-            </Slider>
-        </Grid>
-
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="5px" />
-                <RowDefinition />
-                <RowDefinition Height="5px" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="5px" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="5px" />
-                <RowDefinition />
-                <RowDefinition Height="150px" />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
-            <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
-
-            <Label Grid.Row="1" Grid.Column="0">Channel:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Text="{Binding ChannelTextBoxText}" />
-            
-            <Label Grid.Row="3" Grid.Column="0">Skip bits:</Label>
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     
-                     HorizontalContentAlignment="Right" />
-            
-            <Label Grid.Row="5" Grid.Column="0">Increase volume bits:</Label>
-            <TextBox Grid.Row="5" Grid.Column="1"
-                     Text="{Binding SettingsVolumeUp}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="6" Grid.Column="0">Decrease volume bits:</Label>
-            <TextBox Grid.Row="6" Grid.Column="1"
-                     Text="{Binding SettingsVolumeDown}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="7" Grid.Column="0">Max volume bits:</Label>
-            <TextBox Grid.Row="7" Grid.Column="1"
-                     Text="{Binding SettingsVolumeMax}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="8" Grid.Column="0">Min volume bits:</Label>
-            <TextBox Grid.Row="8" Grid.Column="1"
-                     Text="{Binding SettingsVolumeMin}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="9" Grid.Column="0">Max volume reached text:</Label>
-            <TextBox Grid.Row="9" Grid.Column="1"
-                     Text="{Binding SettingsVolumeMaxText}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="10" Grid.Column="0">Min volume reached text:</Label>
-            <TextBox Grid.Row="10" Grid.Column="1"
-                     Text="{Binding SettingsVolumeMinText}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="11" Grid.Column="0">Volume steps (between 0 and 100):</Label>
-            <TextBox Grid.Row="11" Grid.Column="1"
-                     Text="{Binding SettingsVolumeSteps}" />
-
-            <Label Grid.Row="13" Grid.Column="0">Increase speed bits:</Label>
-            <TextBox Grid.Row="13" Grid.Column="1"
-                     Text="{Binding SettingsSpeedUp}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="14" Grid.Column="0">Decrease speed bits:</Label>
-            <TextBox Grid.Row="14" Grid.Column="1"
-                     Text="{Binding SettingsSpeedDown}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="15" Grid.Column="0">Max speed bits:</Label>
-            <TextBox Grid.Row="15" Grid.Column="1"
-                     Text="{Binding SettingsSpeedMax}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="16" Grid.Column="0">Min speed bits:</Label>
-            <TextBox Grid.Row="16" Grid.Column="1"
-                     Text="{Binding SettingsSpeedMin}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="17" Grid.Column="0">Max speed reached text:</Label>
-            <TextBox Grid.Row="17" Grid.Column="1"
-                     Text="{Binding SettingsSpeedMaxText}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="18" Grid.Column="0">Min speed reached text:</Label>
-            <TextBox Grid.Row="18" Grid.Column="1"
-                     Text="{Binding SettingsSpeedMinText}"
-                     HorizontalContentAlignment="Right" />
-
-            <Label Grid.Row="19" Grid.Column="0">Speed steps (between 0 and 200):</Label>
-            <TextBox Grid.Row="19" Grid.Column="1"
-                     Text="{Binding SettingsSpeedSteps}" />
-
-            <Label Grid.Row="21" Grid.Column="0">Songs:</Label>
-            <Button Grid.Row="21" Grid.Column="1" HorizontalContentAlignment="Center"
-                    Command="{Binding SongAddNewButton}">
-                Add new Song
-            </Button>
-            <ListBox Grid.Row="22" Grid.Column="1"
-                     ItemsSource="{Binding SongList}"
-                     SelectionMode="Extended">
-                <ListBox.InputBindings>
-                    <KeyBinding Key="Delete" Command="{Binding SongItemDeleteKey}" />
-                </ListBox.InputBindings>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding FileName}" Padding="0px" Margin="0px" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-
-            </ListBox>
-
-        </Grid>
-        <Button Grid.Row="4" Command="{Binding SettingsSaveButton}" Padding="5px">
-            Save and apply settings
-        </Button>
-
-        <TextBox Grid.Row="5" IsReadOnly="True" Text="{Binding TextBoxText}"
-                 helper:TextBoxUtilities.AlwaysScrollToEnd="True" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0">Channel:</Label>
+                        <TextBox Grid.Row="0" Grid.Column="1"
+                                 Text="{Binding Path= MainTabViewModel.ChannelTextBoxText}" 
+                                 Margin="5px 2px"/>
+                    </Grid>
 
 
+                    <Label Grid.Row="2" HorizontalContentAlignment="Center" FontSize="16">Music control</Label>
+
+                    <Grid Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30px" />
+                            <RowDefinition Height="30px" />
+                            <RowDefinition Height="15px" />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Row="0" Grid.Column="0" Command="{Binding MainTabViewModel.PlayPauseButton}"
+                                Margin="5px 2px">
+                            Play/Pause
+                        </Button>
+                        <Button Grid.Row="1" Grid.Column="0" Command="{Binding MainTabViewModel.SkipButton}"
+                                Margin="5px 2px">
+                            Skip
+                        </Button>
+                        <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                  IsChecked="{Binding MainTabViewModel.ShuffleCheckbox}"
+                                  Margin="5px 2px">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                            </CheckBox.LayoutTransform>
+                            Shuffle
+                        </CheckBox>
+                        <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                                  IsChecked="{Binding MainTabViewModel.RepeatCheckbox}"
+                                  Margin="5px 2px">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                            </CheckBox.LayoutTransform>
+                            Repeat song
+                        </CheckBox>
+
+                        <Label Grid.Column="0" Grid.Row="3">Current volume:</Label>
+                        <Slider Grid.Column="1" Grid.Row="3"
+                                Minimum="0" Maximum="100"
+                                Ticks="{Binding MusicSettingsViewModel.SettingsVolumeSteps}"
+                                TickPlacement="BottomRight" IsSnapToTickEnabled="True"
+                                Value="{Binding MainTabViewModel.VolumeSlider}"
+                                Margin="5px 2px" />
+
+                        <Label Grid.Column="0" Grid.Row="4">Current speed:</Label>
+                        <Slider Grid.Column="1" Grid.Row="4"
+                                Minimum="0" Maximum="200"
+                                Ticks="{Binding MusicSettingsViewModel.SettingsSpeedSteps}"
+                                TickPlacement="BottomRight" IsSnapToTickEnabled="True"
+                                Value="{Binding MainTabViewModel.SpeedSlider}"
+                                Margin="5px 2px">
+                        </Slider>
+                    </Grid>
+
+                    <TextBox Grid.Row="5" IsReadOnly="True" Text="{Binding MainTabViewModel.TextBoxText}"
+                             helper:TextBoxUtilities.AlwaysScrollToEnd="True" />
+
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Music Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="15px"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="5px" />
+                            <RowDefinition />
+                            <RowDefinition Height="5px" />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition Height="5px" />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition Height="5px" />
+                            <RowDefinition />
+                            <RowDefinition Height="150px" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
+                        <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
+
+                        <Label Grid.Row="2" Grid.Column="0">Skip bits:</Label>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSkip}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="4" Grid.Column="0">Increase volume bits:</Label>
+                        <TextBox Grid.Row="4" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeUp}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="5" Grid.Column="0">Decrease volume bits:</Label>
+                        <TextBox Grid.Row="5" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeDown}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="6" Grid.Column="0">Max volume bits:</Label>
+                        <TextBox Grid.Row="6" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeMax}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="7" Grid.Column="0">Min volume bits:</Label>
+                        <TextBox Grid.Row="7" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeMin}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="8" Grid.Column="0">Max volume reached text:</Label>
+                        <TextBox Grid.Row="8" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeMaxText}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="9" Grid.Column="0">Min volume reached text:</Label>
+                        <TextBox Grid.Row="9" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeMinText}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="10" Grid.Column="0">Volume steps (between 0 and 100):</Label>
+                        <TextBox Grid.Row="10" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsVolumeSteps}" />
+
+                        <Label Grid.Row="12" Grid.Column="0">Increase speed bits:</Label>
+                        <TextBox Grid.Row="12" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedUp}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="13" Grid.Column="0">Decrease speed bits:</Label>
+                        <TextBox Grid.Row="13" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedDown}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="14" Grid.Column="0">Max speed bits:</Label>
+                        <TextBox Grid.Row="14" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedMax}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="15" Grid.Column="0">Min speed bits:</Label>
+                        <TextBox Grid.Row="15" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedMin}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="16" Grid.Column="0">Max speed reached text:</Label>
+                        <TextBox Grid.Row="16" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedMaxText}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="17" Grid.Column="0">Min speed reached text:</Label>
+                        <TextBox Grid.Row="17" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedMinText}"
+                                 HorizontalContentAlignment="Right" />
+
+                        <Label Grid.Row="18" Grid.Column="0">Speed steps (between 0 and 200):</Label>
+                        <TextBox Grid.Row="18" Grid.Column="1"
+                                 Text="{Binding MusicSettingsViewModel.SettingsSpeedSteps}" />
+
+                        <Label Grid.Row="20" Grid.Column="0">Songs:</Label>
+                        <Button Grid.Row="20" Grid.Column="1" HorizontalContentAlignment="Center"
+                                Command="{Binding MusicSettingsViewModel.SongAddNewButton}">
+                            Add new Song
+                        </Button>
+                        <ListBox Grid.Row="21" Grid.Column="1"
+                                 ItemsSource="{Binding MusicSettingsViewModel.SongList}"
+                                 SelectionMode="Extended">
+                            <ListBox.InputBindings>
+                                <KeyBinding Key="Delete" Command="{Binding MusicSettingsViewModel.SongItemDeleteKey}" />
+                            </ListBox.InputBindings>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding FileName}" Padding="0px" Margin="0px" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+
+                    </Grid>
+
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Effects Settings">
+                <Grid>
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 </Window>

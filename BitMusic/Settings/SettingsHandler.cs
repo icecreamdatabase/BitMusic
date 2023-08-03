@@ -19,8 +19,8 @@ public class SettingsHandler
 
     public void SaveSettingsToDisk()
     {
-        if (_settingsFile.Exists)
-            _settingsFile.Delete();
+        //if (_settingsFile.Exists)
+        //    _settingsFile.Delete();
         File.WriteAllText(_settingsFile.FullName, XmlParser.XmlSerializeToString(ActiveSettings));
     }
 }

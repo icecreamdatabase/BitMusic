@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using BitMusic.Helper;
 using BitMusic.Settings;
 
@@ -37,6 +38,9 @@ public class ObsFileWriter
 
     private static string GetText(XmlTypeSetting xmlTypeSetting, double sliderValue)
     {
+        if (xmlTypeSetting.Steps.Length == 0)
+            return string.Empty;
+
         if (Math.Abs(sliderValue - xmlTypeSetting.Steps[0]) < 0.001d)
         {
             // reached min
