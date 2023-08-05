@@ -29,6 +29,10 @@ public class BotInstance : IDisposable
     {
         UserName = userName;
         Token = token;
+
+        if (UserName.ToLowerInvariant().StartsWith("justinfan"))
+            Limits = Limits.AnonConnection;
+                
         _ircPoolManager = new IrcPoolManager(this);
         Channels.CollectionChanged += OnChannelsChanged;
 

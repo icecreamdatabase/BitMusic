@@ -2,6 +2,18 @@
 
 public class Limits
 {
+    public static readonly Limits AnonConnection = new()
+    {
+        SendConnections = 0,
+        MaxChannelsPerIrcClient = 50,
+        IrcAuthBucketLimit = 20,
+        IrcJoinBucketLimit = 20,
+        IrcChannelMessageBucketLimitUser = 20,
+        IrcChannelMessageBucketLimitMod = 100,
+        IrcGlobalMessageBucketLimitUser = 20,
+        IrcGlobalMessageBucketLimitMod = 100,
+    };
+    
     public static readonly Limits NormalBot = new()
     {
         SendConnections = 2,

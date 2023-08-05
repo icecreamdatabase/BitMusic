@@ -35,6 +35,7 @@ public class IrcPoolManager
     public IrcPoolManager(BotInstance botInstance)
     {
         _botInstance = botInstance;
+        
         IrcBuckets = new IrcBuckets(_botInstance.Limits);
         _ircSendQueue = new IrcSendQueue(this);
         for (int i = 0; i < _botInstance.Limits.SendConnections; i++)
