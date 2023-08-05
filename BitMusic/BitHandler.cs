@@ -56,6 +56,9 @@ public class BitHandler
 
     private void TmEffectsHandling(int bits)
     {
+        if (!_bitMusicViewModel.MainTabViewModel.EffectsEnabledCheckbox)
+            return;
+        
         if (bits == _settingsHandler.ActiveSettings.TmSettings.BitAmount)
         {
             string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
@@ -69,6 +72,9 @@ public class BitHandler
 
     private void MusicHandling(int bits)
     {
+        if (!_bitMusicViewModel.MainTabViewModel.MusicEnabledCheckbox)
+            return;
+        
         if (bits == _settingsHandler.ActiveSettings.Skip)
         {
             _textBoxLogger.WriteLine("📻 Skipping song");

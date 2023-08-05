@@ -9,6 +9,12 @@ public class XmlSettings
     [XmlElement("Channel")]
     public string Channel = string.Empty;
 
+    [XmlElement("MusicEnabled")]
+    public bool MusicEnabled;
+
+    [XmlElement("EffectsEnabled")]
+    public bool EffectsEnabled;
+
     [XmlElement("TmSettings")]
     public XmlTmSettings TmSettings = new()
     {

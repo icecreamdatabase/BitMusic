@@ -125,7 +125,7 @@ public class MainTabViewModel : ObservableRecipient
     {
         if (e.PropertyName is nameof(VolumeSlider) or nameof(SpeedSlider))
             _obsFileWriter.UpdateText(VolumeSlider, SpeedSlider);
-        else if (e.PropertyName is nameof(ChannelTextBoxText))
+        else
             _bitMusicViewModel.SaveSettings();
 
         base.OnPropertyChanged(e);
@@ -139,6 +139,8 @@ public class MainTabViewModel : ObservableRecipient
 
     public void LoadSettings(SettingsHandler settingsHandler)
     {
+        MusicEnabledCheckbox = settingsHandler.ActiveSettings.MusicEnabled;
+        EffectsEnabledCheckbox = settingsHandler.ActiveSettings.EffectsEnabled;
         ChannelTextBoxText = settingsHandler.ActiveSettings.Channel;
 
         if (!_botInstance.Channels.Contains(ChannelTextBoxText))
@@ -157,6 +159,8 @@ public class MainTabViewModel : ObservableRecipient
     public void SaveSettings(SettingsHandler settingsHandler)
     {
         settingsHandler.ActiveSettings.Channel = ChannelTextBoxText;
+        settingsHandler.ActiveSettings.MusicEnabled = MusicEnabledCheckbox;
+        settingsHandler.ActiveSettings.EffectsEnabled = EffectsEnabledCheckbox;
     }
 
     #endregion
