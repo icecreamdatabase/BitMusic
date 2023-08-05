@@ -125,7 +125,7 @@ public class MainTabViewModel : ObservableRecipient
     {
         if (e.PropertyName is nameof(VolumeSlider) or nameof(SpeedSlider))
             _obsFileWriter.UpdateText(VolumeSlider, SpeedSlider);
-        else if (e.PropertyName is nameof(ChannelTextBoxText) && !_bitMusicViewModel.IsLoadingData)
+        else if (e.PropertyName is nameof(ChannelTextBoxText))
             _bitMusicViewModel.SaveSettings();
 
         base.OnPropertyChanged(e);

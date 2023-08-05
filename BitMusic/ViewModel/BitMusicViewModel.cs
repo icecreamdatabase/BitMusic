@@ -18,8 +18,6 @@ public class BitMusicViewModel : ObservableRecipient
     public MusicSettingsViewModel MusicSettingsViewModel { get; }
     public TmEffectsViewModel TmEffectsViewModel { get; }
 
-    public bool IsLoadingData { get; private set; }
-
     private readonly BotInstance _botInstance;
 
     private readonly TextBoxLogger _textBoxLogger;
@@ -30,6 +28,8 @@ public class BitMusicViewModel : ObservableRecipient
     private readonly ObsFileWriter _obsFileWriter;
 
     //private readonly OBSWebsocket _ws;
+
+    private bool _isLoadingData;
 
     #endregion
 
@@ -52,7 +52,7 @@ public class BitMusicViewModel : ObservableRecipient
 
         MainTabViewModel = new(this, _textBoxLogger, _obsFileWriter, _musicPlayer, _botInstance);
         MusicSettingsViewModel = new(this);
-        TmEffectsViewModel = new();
+        TmEffectsViewModel = new(this);
 
         LoadSettings();
 
@@ -74,16 +74,21 @@ public class BitMusicViewModel : ObservableRecipient
 
     private void LoadSettings()
     {
-        IsLoadingData = true;
+        _isLoadingData = true;
         MainTabViewModel.LoadSettings(_settingsHandler);
         MusicSettingsViewModel.LoadSettings(_settingsHandler);
-        IsLoadingData = false;
+        TmEffectsViewModel.LoadSettings(_settingsHandler);
+        _isLoadingData = false;
     }
 
     internal void SaveSettings()
     {
+        if (_isLoadingData)
+            return;
+
         MainTabViewModel.SaveSettings(_settingsHandler);
         MusicSettingsViewModel.SaveSettings(_settingsHandler);
+        TmEffectsViewModel.SaveSettings(_settingsHandler);
 
         _settingsHandler.SaveSettingsToDisk();
         LoadSettings();

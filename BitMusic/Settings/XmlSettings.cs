@@ -13,7 +13,7 @@ public class XmlSettings
     public XmlTmSettings TmSettings = new()
     {
         ProcessName = "Trackmania.exe",
-        BitAmount = 1234
+        BitAmount = 123
     };
 
     [XmlElement("Skip")]

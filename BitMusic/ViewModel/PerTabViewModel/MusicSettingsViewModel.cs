@@ -170,8 +170,7 @@ public class MusicSettingsViewModel : ObservableRecipient
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        if (!_bitMusicViewModel.IsLoadingData)
-            _bitMusicViewModel.SaveSettings();
+        _bitMusicViewModel.SaveSettings();
 
         base.OnPropertyChanged(e);
     }

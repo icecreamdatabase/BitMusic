@@ -54,8 +54,8 @@
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="0" Grid.Column="0">Channel:</Label>
                         <TextBox Grid.Row="0" Grid.Column="1"
-                                 Text="{Binding Path= MainTabViewModel.ChannelTextBoxText}" 
-                                 Margin="5px 2px"/>
+                                 Text="{Binding Path= MainTabViewModel.ChannelTextBoxText}"
+                                 Margin="5px 2px" />
                     </Grid>
 
 
@@ -126,7 +126,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
-                        <RowDefinition Height="15px"/>
+                        <RowDefinition Height="15px" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
@@ -268,7 +268,29 @@
             </TabItem>
             <TabItem Header="Effects Settings">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="5px" />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
+                    <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
+
+                    <Label Grid.Row="2" Grid.Column="0">Effect bits:</Label>
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             Text="{Binding TmEffectsViewModel.SettingsEffectBits}"
+                             HorizontalContentAlignment="Right" />
+
+                    <Label Grid.Row="3" Grid.Column="0">.exe name:</Label>
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             Text="{Binding TmEffectsViewModel.SettingsExeName}"
+                             HorizontalContentAlignment="Right" />
                 </Grid>
             </TabItem>
 
