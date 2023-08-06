@@ -41,6 +41,8 @@ public static class EffectsHandler
 
         new AhkMsgBox(1, "Hi :)"),
         new AhkTooltip(1, "Hi :)", 400, 20),
+        
+        new ShowUnregisteredHypercam(1, 10_000),
     };
 
     #endregion
