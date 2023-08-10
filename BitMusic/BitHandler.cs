@@ -12,10 +12,16 @@ namespace BitMusic;
 
 public class BitHandler
 {
+    #region Properties and Fields
+
     private readonly BitMusicViewModel _bitMusicViewModel;
     private readonly TextBoxLogger _textBoxLogger;
     private readonly SettingsHandler _settingsHandler;
     private readonly BotInstance _botInstance;
+
+    #endregion
+
+    #region Constructor
 
     public BitHandler(BitMusicViewModel bitMusicViewModel, TextBoxLogger textBoxLogger, BotInstance botInstance,
         SettingsHandler settingsHandler)
@@ -27,6 +33,8 @@ public class BitHandler
 
         _botInstance.OnNewIrcPrivMsg += NewIrcPrivMsg;
     }
+
+    #endregion
 
     #region Methods
 

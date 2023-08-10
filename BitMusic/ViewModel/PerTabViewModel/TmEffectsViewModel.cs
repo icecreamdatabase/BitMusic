@@ -11,6 +11,8 @@ namespace BitMusic.ViewModel.PerTabViewModel;
 
 public class TmEffectsViewModel : ObservableRecipient
 {
+    #region Properties
+
     private string _settingsEffectBits = string.Empty;
 
     public string SettingsEffectBits
@@ -26,6 +28,16 @@ public class TmEffectsViewModel : ObservableRecipient
         get => _settingsExeName;
         set => SetProperty(ref _settingsExeName, value);
     }
+
+    private ObservableCollection<EffectBase> _effectList;
+
+    public ObservableCollection<EffectBase> EffectList
+    {
+        get => _effectList;
+        private set => SetProperty(ref _effectList, value);
+    }
+
+    #endregion
 
     #region Properties and Fields
 
@@ -50,14 +62,6 @@ public class TmEffectsViewModel : ObservableRecipient
         _bitMusicViewModel.SaveSettings();
 
         base.OnPropertyChanged(e);
-    }
-
-    private ObservableCollection<EffectBase> _effectList; // TODO
-
-    public ObservableCollection<EffectBase> EffectList
-    {
-        get => _effectList;
-        private set => SetProperty(ref _effectList, value);
     }
 
     #endregion
