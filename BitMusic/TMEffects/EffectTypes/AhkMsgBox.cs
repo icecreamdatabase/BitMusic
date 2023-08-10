@@ -11,11 +11,6 @@ public class AhkMsgBox : EffectBase
         Text = text;
     }
 
-    public override string GetConsoleOutput()
-    {
-        return "📓 Showing message box";
-    }
-
     public override void Execute(string processName)
     {
         string code = $$"""

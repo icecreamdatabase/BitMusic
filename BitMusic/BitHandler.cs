@@ -7,7 +7,6 @@ using BitMusic.Settings;
 using BitMusic.TMEffects;
 using BitMusic.TMEffects.EffectTypes;
 using BitMusic.ViewModel;
-using BitMusic.ViewModel.PerTabViewModel;
 
 namespace BitMusic;
 

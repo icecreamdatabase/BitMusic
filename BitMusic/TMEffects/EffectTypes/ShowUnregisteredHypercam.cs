@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using BitMusic.TMEffects.EffectHelper;
 
@@ -13,11 +12,6 @@ public class ShowUnregisteredHypercam : EffectBase
         enabled, weight)
     {
         _durationMs = durationMs;
-    }
-
-    public override string GetConsoleOutput()
-    {
-        return $"🎥 Showing \"Unregistered Hypercam 2\" overlay for {Math.Round(_durationMs / 1000f, 1)}";
     }
 
     public override void Execute(string processName)

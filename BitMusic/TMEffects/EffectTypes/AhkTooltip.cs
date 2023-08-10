@@ -19,11 +19,6 @@ public class AhkTooltip : EffectBase
         Jumps = jumps;
     }
 
-    public override string GetConsoleOutput()
-    {
-        return "📓 Showing tooltips";
-    }
-
     public override void Execute(string processName)
     {
         string code = $$"""

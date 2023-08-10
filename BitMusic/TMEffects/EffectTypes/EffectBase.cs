@@ -22,7 +22,6 @@ public abstract class EffectBase : ObservableRecipient
         set => SetProperty(ref _weight, value);
     }
 
-
     protected EffectBase(string displayName, bool enabled, int weight)
     {
         DisplayName = displayName;
@@ -30,7 +29,10 @@ public abstract class EffectBase : ObservableRecipient
         Weight = weight;
     }
 
-    public abstract string GetConsoleOutput();
+    public string GetConsoleOutput()
+    {
+        return $"✨ {DisplayName}";
+    }
 
     public abstract void Execute(string processName);
 }

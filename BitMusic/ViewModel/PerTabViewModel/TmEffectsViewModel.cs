@@ -2,12 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 using BitMusic.Settings;
 using BitMusic.TMEffects;
 using BitMusic.TMEffects.EffectTypes;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BitMusic.ViewModel.PerTabViewModel;
 

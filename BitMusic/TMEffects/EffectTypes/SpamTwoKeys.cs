@@ -1,5 +1,4 @@
-﻿using System;
-using BitMusic.TMEffects.EffectHelper;
+﻿using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -16,11 +15,6 @@ public class SpamTwoKeys : HoldKey
         AhkKeyCode2 = ahkKeyCode2;
         HoldTimeMs = holdTimeMs;
         HoldTimeMsAhkKeyCode2 = holdTimeMsAhkKeyCode2;
-    }
-
-    public override string GetConsoleOutput()
-    {
-        return $"🏎 Spamming {AhkKeyCode} and {AhkKeyCode2} for {Math.Round(ActiveTimeMs / 1000f, 1)} s";
     }
 
     public override void Execute(string processName)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
@@ -16,11 +15,6 @@ public class DisplayRotationEffect : EffectBase
         DisplayNumber = displayNumber;
         Orientation = orientation;
         DurationMs = durationMs;
-    }
-
-    public override string GetConsoleOutput()
-    {
-        return $"💻 Rotating the main monitor for {Math.Round(DurationMs / 1000f, 1)} s";
     }
 
     public override void Execute(string processName)

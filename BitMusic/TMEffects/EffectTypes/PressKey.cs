@@ -11,11 +11,6 @@ public class PressKey : EffectBase
         AhkKeyCode = ahkKeyCode;
     }
 
-    public override string GetConsoleOutput()
-    {
-        return $"🏎 Pressing {AhkKeyCode}";
-    }
-
     public override void Execute(string processName)
     {
         string code = $$"""
