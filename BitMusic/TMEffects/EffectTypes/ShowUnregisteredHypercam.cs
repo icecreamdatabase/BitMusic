@@ -9,7 +9,8 @@ public class ShowUnregisteredHypercam : EffectBase
 {
     private readonly int _durationMs;
 
-    public ShowUnregisteredHypercam(int weight, int durationMs) : base(weight)
+    public ShowUnregisteredHypercam(string displayName, bool enabled, int weight, int durationMs) : base(displayName,
+        enabled, weight)
     {
         _durationMs = durationMs;
     }

@@ -268,29 +268,96 @@
             </TabItem>
             <TabItem Header="Effects Settings">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
-                        <RowDefinition Height="5px" />
+                        <RowDefinition Height="15px" />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="5px" />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
-                    <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
+                        <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
+                        <Label Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center">Value</Label>
 
-                    <Label Grid.Row="2" Grid.Column="0">Effect bits:</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1"
-                             Text="{Binding TmEffectsViewModel.SettingsEffectBits}"
-                             HorizontalContentAlignment="Right" />
+                        <Label Grid.Row="2" Grid.Column="0">Effect bits:</Label>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding TmEffectsViewModel.SettingsEffectBits}"
+                                 HorizontalContentAlignment="Right" />
 
-                    <Label Grid.Row="3" Grid.Column="0">.exe name:</Label>
-                    <TextBox Grid.Row="3" Grid.Column="1"
-                             Text="{Binding TmEffectsViewModel.SettingsExeName}"
-                             HorizontalContentAlignment="Right" />
+                        <Label Grid.Row="3" Grid.Column="0">.exe name:</Label>
+                        <TextBox Grid.Row="3" Grid.Column="1"
+                                 Text="{Binding TmEffectsViewModel.SettingsExeName}"
+                                 HorizontalContentAlignment="Right" />
+                    </Grid>
+
+                    <Label Grid.Row="2" HorizontalContentAlignment="Center" FontSize="16">Effects</Label>
+
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="225px" />
+                            <ColumnDefinition Width="75px" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" HorizontalContentAlignment="Center">Effect</Label>
+                            <Label Grid.Column="1" HorizontalContentAlignment="Center">Enabled</Label>
+                            <Label Grid.Column="2" HorizontalContentAlignment="Center">Weight</Label>
+                    </Grid>
+                    <Border Grid.Row="4" Grid.Column="0" BorderThickness="0.5px " BorderBrush="Black">
+                        <ScrollViewer Height="400"
+                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+
+                            <ItemsControl ItemsSource="{Binding TmEffectsViewModel.EffectList}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="225px" />
+                                                <ColumnDefinition Width="75px" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" BorderThickness="0 0.5px 0.5px 0.5px "
+                                                    BorderBrush="Black">
+                                                <Label Content="{Binding DisplayName}"
+                                                       Padding="5px 2px" Margin="2px" />
+                                            </Border>
+                                            <Border Grid.Column="1" BorderThickness="0 0.5px 0.5px 0.5px "
+                                                    BorderBrush="Black">
+                                                <CheckBox VerticalAlignment="Center"
+                                                          IsChecked="{Binding Enabled}"
+                                                          HorizontalAlignment="Center"
+                                                          HorizontalContentAlignment="Center">
+                                                    <CheckBox.LayoutTransform>
+                                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                                    </CheckBox.LayoutTransform>
+                                                </CheckBox>
+                                            </Border>
+                                            <Border Grid.Column="2" BorderThickness="0 0.5px 0 0.5px " 
+                                                    BorderBrush="Black">
+                                                <TextBox
+                                                    Text="{Binding Weight}"
+                                                    HorizontalContentAlignment="Right"
+                                                    Padding="5px 2px" Margin="2px" 
+                                                    BorderThickness="0px"
+                                                    />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
                 </Grid>
             </TabItem>
 

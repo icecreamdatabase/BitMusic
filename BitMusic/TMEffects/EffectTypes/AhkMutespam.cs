@@ -9,8 +9,8 @@ public class AhkMutespam : EffectBase
     public int MuteDurationMs { get; }
     public int UnmuteDurationMs { get; }
 
-    public AhkMutespam(int weight, int activeTimeMs, int muteDurationMs = 150, int unmuteDurationMs = 50) :
-        base(weight)
+    public AhkMutespam(string displayName, bool enabled, int weight, int activeTimeMs, int muteDurationMs = 150, int unmuteDurationMs = 50) :
+        base(displayName, enabled, weight)
     {
         ActiveTimeMs = activeTimeMs;
         MuteDurationMs = muteDurationMs;

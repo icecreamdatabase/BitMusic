@@ -2,10 +2,15 @@
 
 public abstract class EffectBase
 {
-    public int Weight { get; }
+    public string DisplayName { get; }
+    public bool Enabled { get; set; }
+    public int Weight { get; set; }
+    
 
-    protected EffectBase(int weight)
+    protected EffectBase(string displayName, bool enabled, int weight)
     {
+        DisplayName = displayName;
+        Enabled = enabled;
         Weight = weight;
     }
 

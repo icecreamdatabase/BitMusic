@@ -10,7 +10,8 @@ public class DisplayRotationEffect : EffectBase
     public DisplayRotationHelper.Orientations Orientation { get; }
     public int DurationMs { get; }
 
-    public DisplayRotationEffect(int weight, uint displayNumber, DisplayRotationHelper.Orientations orientation, int durationMs) : base(weight)
+    public DisplayRotationEffect(string displayName, bool enabled, int weight, uint displayNumber,
+        DisplayRotationHelper.Orientations orientation, int durationMs) : base(displayName, enabled, weight)
     {
         DisplayNumber = displayNumber;
         Orientation = orientation;
@@ -27,7 +28,8 @@ public class DisplayRotationEffect : EffectBase
         Task.Run(() => DisplayRotationTask(DisplayNumber, Orientation, DurationMs));
     }
 
-    private static void DisplayRotationTask(uint displayNumber, DisplayRotationHelper.Orientations orientation, int durationMs)
+    private static void DisplayRotationTask(uint displayNumber, DisplayRotationHelper.Orientations orientation,
+        int durationMs)
     {
         try
         {

@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using BitMusic.Settings;
+using BitMusic.TMEffects;
+using BitMusic.TMEffects.EffectTypes;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BitMusic.ViewModel.PerTabViewModel;
@@ -40,6 +43,14 @@ public class TmEffectsViewModel : ObservableRecipient
         _bitMusicViewModel.SaveSettings();
 
         base.OnPropertyChanged(e);
+    }
+
+    private ObservableCollection<EffectBase> _effectList = new(EffectsHandler.Effects); // TODO
+
+    public ObservableCollection<EffectBase> EffectList
+    {
+        get => _effectList;
+        private set => SetProperty(ref _effectList, value);
     }
 
     #endregion
