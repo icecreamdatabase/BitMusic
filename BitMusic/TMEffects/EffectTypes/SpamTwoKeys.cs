@@ -8,7 +8,7 @@ public class SpamTwoKeys : HoldKey
     public int HoldTimeMs { get; }
     public int HoldTimeMsAhkKeyCode2 { get; }
 
-    public SpamTwoKeys(string displayName, bool enabled, int weight, string ahkKeyCode, string ahkKeyCode2,
+    public SpamTwoKeys(string displayName, bool enabled, uint weight, string ahkKeyCode, string ahkKeyCode2,
         int activeTimeMs, int holdTimeMs = 50, int holdTimeMsAhkKeyCode2 = 50) : base(displayName, enabled, weight,
         ahkKeyCode, activeTimeMs)
     {

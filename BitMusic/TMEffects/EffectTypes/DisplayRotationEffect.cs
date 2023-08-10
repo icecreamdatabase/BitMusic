@@ -9,7 +9,7 @@ public class DisplayRotationEffect : EffectBase
     public DisplayRotationHelper.Orientations Orientation { get; }
     public int DurationMs { get; }
 
-    public DisplayRotationEffect(string displayName, bool enabled, int weight, uint displayNumber,
+    public DisplayRotationEffect(string displayName, bool enabled, uint weight, uint displayNumber,
         DisplayRotationHelper.Orientations orientation, int durationMs) : base(displayName, enabled, weight)
     {
         DisplayNumber = displayNumber;

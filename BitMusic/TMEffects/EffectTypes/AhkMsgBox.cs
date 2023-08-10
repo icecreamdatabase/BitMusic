@@ -6,7 +6,7 @@ public class AhkMsgBox : EffectBase
 {
     public string Text { get; }
 
-    public AhkMsgBox(string displayName, bool enabled, int weight, string text) : base(displayName, enabled, weight)
+    public AhkMsgBox(string displayName, bool enabled, uint weight, string text) : base(displayName, enabled, weight)
     {
         Text = text;
     }

@@ -11,7 +11,7 @@ public class AhkTooltip : EffectBase
     public int TimeBetweenJumpsMs { get; }
     public int Jumps { get; }
 
-    public AhkTooltip(string displayName, bool enabled, int weight, string text, int timeBetweenJumpsMs, int jumps) :
+    public AhkTooltip(string displayName, bool enabled, uint weight, string text, int timeBetweenJumpsMs, int jumps) :
         base(displayName, enabled, weight)
     {
         Text = text;

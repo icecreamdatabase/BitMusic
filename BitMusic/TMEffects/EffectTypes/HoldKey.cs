@@ -6,7 +6,7 @@ public class HoldKey : PressKey
 {
     public int ActiveTimeMs { get; }
 
-    public HoldKey(string displayName, bool enabled, int weight, string ahkKeyCode, int activeTimeMs) : base(displayName, enabled, weight, ahkKeyCode)
+    public HoldKey(string displayName, bool enabled, uint weight, string ahkKeyCode, int activeTimeMs) : base(displayName, enabled, weight, ahkKeyCode)
     {
         ActiveTimeMs = activeTimeMs;
     }

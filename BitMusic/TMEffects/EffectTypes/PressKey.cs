@@ -6,7 +6,7 @@ public class PressKey : EffectBase
 {
     public string AhkKeyCode { get; }
 
-    public PressKey(string displayName, bool enabled, int weight, string ahkKeyCode) : base(displayName, enabled, weight)
+    public PressKey(string displayName, bool enabled, uint weight, string ahkKeyCode) : base(displayName, enabled, weight)
     {
         AhkKeyCode = ahkKeyCode;
     }

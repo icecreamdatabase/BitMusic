@@ -50,7 +50,7 @@ public static class EffectsHandler
         new AhkMsgBox("Show MessageBox", true, 1, "Hi :)"),
         new AhkTooltip("Show many Tooltips", true, 1, "Hi :)", 400, 20),
 
-        new ShowUnregisteredHypercam("Add \"Unregistered Hypercam 2\" watermark", true, 1, 10_000),
+        new ShowUnregisteredHypercam("\"Unregistered Hypercam 2\" watermark", true, 1, 10_000),
     };
 
     #endregion
@@ -59,7 +59,7 @@ public static class EffectsHandler
 
     private static readonly Random WeightRandom = new();
 
-    private static int TotalWeight(this IEnumerable<EffectBase> effects) =>
+    private static long TotalWeight(this IEnumerable<EffectBase> effects) =>
         effects.Where(effect => effect.Enabled).Sum(effect => effect.Weight);
 
     /// <summary>
@@ -70,7 +70,7 @@ public static class EffectsHandler
     /// <returns></returns>
     private static EffectBase? SelectRandomEffectByWeight(this ICollection<EffectBase> effects)
     {
-        int randomIndexForWeightCalc = WeightRandom.Next(0, TotalWeight(effects));
+        long randomIndexForWeightCalc = WeightRandom.NextInt64(0, TotalWeight(effects));
 
         foreach (EffectBase effect in effects.Where(effect => effect.Enabled))
         {

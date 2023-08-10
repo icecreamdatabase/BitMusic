@@ -7,7 +7,7 @@ public class SpamKey : HoldKey
     public int HoldTimeMs { get; }
     public int ReleaseTimeMs { get; }
 
-    public SpamKey(string displayName, bool enabled, int weight, string ahkKeyCode, int activeTimeMs, int holdTimeMs = 95, int releaseTimeMs = 5) :
+    public SpamKey(string displayName, bool enabled, uint weight, string ahkKeyCode, int activeTimeMs, int holdTimeMs = 95, int releaseTimeMs = 5) :
         base(displayName, enabled, weight, ahkKeyCode, activeTimeMs)
     {
         HoldTimeMs = holdTimeMs;

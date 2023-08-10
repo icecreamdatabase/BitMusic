@@ -12,7 +12,7 @@ public class XmlEffectSetting
     public bool Enabled;
 
     [XmlAttribute]
-    public int Weight = 1;
+    public uint Weight = 1;
 
     public XmlEffectSetting()
     {

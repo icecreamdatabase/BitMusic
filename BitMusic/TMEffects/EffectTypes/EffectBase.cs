@@ -14,15 +14,15 @@ public abstract class EffectBase : ObservableRecipient
         set => SetProperty(ref _enabled, value);
     }
 
-    private int _weight;
+    private uint _weight;
 
-    public int Weight
+    public uint Weight
     {
         get => _weight;
         set => SetProperty(ref _weight, value);
     }
 
-    protected EffectBase(string displayName, bool enabled, int weight)
+    protected EffectBase(string displayName, bool enabled, uint weight)
     {
         DisplayName = displayName;
         Enabled = enabled;
