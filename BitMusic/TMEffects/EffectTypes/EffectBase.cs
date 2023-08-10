@@ -1,11 +1,27 @@
-﻿namespace BitMusic.TMEffects.EffectTypes;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-public abstract class EffectBase
+namespace BitMusic.TMEffects.EffectTypes;
+
+public abstract class EffectBase : ObservableRecipient
 {
     public string DisplayName { get; }
-    public bool Enabled { get; set; }
-    public int Weight { get; set; }
-    
+
+    private bool _enabled;
+
+    public bool Enabled
+    {
+        get => _enabled;
+        set => SetProperty(ref _enabled, value);
+    }
+
+    private int _weight;
+
+    public int Weight
+    {
+        get => _weight;
+        set => SetProperty(ref _weight, value);
+    }
+
 
     protected EffectBase(string displayName, bool enabled, int weight)
     {

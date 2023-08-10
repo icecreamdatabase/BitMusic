@@ -7,6 +7,7 @@ using BitMusic.Settings;
 using BitMusic.TMEffects;
 using BitMusic.TMEffects.EffectTypes;
 using BitMusic.ViewModel;
+using BitMusic.ViewModel.PerTabViewModel;
 
 namespace BitMusic;
 
@@ -58,23 +59,23 @@ public class BitHandler
     {
         if (!_bitMusicViewModel.MainTabViewModel.EffectsEnabledCheckbox)
             return;
-        
-        if (bits == _settingsHandler.ActiveSettings.TmSettings.BitAmount)
-        {
-            string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
-            EffectBase? effectBase = EffectsHandler.ExecuteRandomEffectByWeight(processName);
-            if (effectBase != null)
-                _textBoxLogger.WriteLine(effectBase.GetConsoleOutput());
-            else
-                _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
-        }
+
+        if (bits != _settingsHandler.ActiveSettings.TmSettings.BitAmount)
+            return;
+
+        string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
+        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList.ExecuteRandomEffectByWeight(processName);
+        if (effect != null)
+            _textBoxLogger.WriteLine(effect.GetConsoleOutput());
+        else
+            _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
     }
 
     private void MusicHandling(int bits)
     {
         if (!_bitMusicViewModel.MainTabViewModel.MusicEnabledCheckbox)
             return;
-        
+
         if (bits == _settingsHandler.ActiveSettings.Skip)
         {
             _textBoxLogger.WriteLine("📻 Skipping song");

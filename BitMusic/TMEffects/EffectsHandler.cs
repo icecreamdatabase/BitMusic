@@ -10,7 +10,7 @@ public static class EffectsHandler
 {
     #region Effects
 
-    public static readonly IReadOnlyList<EffectBase> Effects = new List<EffectBase>
+    public static readonly IReadOnlyList<EffectBase> DefaultEffects = new List<EffectBase>
     {
         new PressKey("Give up", true, 1, "Del"),
         new PressKey("Respawn", true, 1, "Backspace"),
@@ -59,7 +59,8 @@ public static class EffectsHandler
 
     private static readonly Random WeightRandom = new();
 
-    private static int TotalWeight => Effects.Sum(effect => effect.Weight);
+    private static int TotalWeight(this IEnumerable<EffectBase> effects) =>
+        effects.Where(effect => effect.Enabled).Sum(effect => effect.Weight);
 
     /// <summary>
     /// Weighted random selection<br/>
@@ -67,11 +68,11 @@ public static class EffectsHandler
     /// https://stackoverflow.com/questions/56692/random-weighted-choice
     /// </summary>
     /// <returns></returns>
-    private static EffectBase? SelectRandomEffectByWeight()
+    private static EffectBase? SelectRandomEffectByWeight(this ICollection<EffectBase> effects)
     {
-        int randomIndexForWeightCalc = WeightRandom.Next(0, TotalWeight);
+        int randomIndexForWeightCalc = WeightRandom.Next(0, TotalWeight(effects));
 
-        foreach (EffectBase effect in Effects)
+        foreach (EffectBase effect in effects.Where(effect => effect.Enabled))
         {
             if (randomIndexForWeightCalc < effect.Weight)
                 return effect;
@@ -83,9 +84,9 @@ public static class EffectsHandler
         return null;
     }
 
-    public static EffectBase? ExecuteRandomEffectByWeight(string processName)
+    public static EffectBase? ExecuteRandomEffectByWeight(this ICollection<EffectBase> effects, string processName)
     {
-        EffectBase? randomEffect = SelectRandomEffectByWeight();
+        EffectBase? randomEffect = SelectRandomEffectByWeight(effects);
 
         // Do nothing if have no effects
         if (randomEffect == null)

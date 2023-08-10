@@ -1,9 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 using BitMusic.Settings;
 using BitMusic.TMEffects;
 using BitMusic.TMEffects.EffectTypes;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BitMusic.ViewModel.PerTabViewModel;
 
@@ -36,6 +40,11 @@ public class TmEffectsViewModel : ObservableRecipient
     public TmEffectsViewModel(BitMusicViewModel bitMusicViewModel)
     {
         _bitMusicViewModel = bitMusicViewModel;
+        _effectList = new ObservableCollection<EffectBase>(EffectsHandler.DefaultEffects);
+        foreach (EffectBase effectBase in _effectList)
+        {
+            effectBase.PropertyChanged += (_, args) => OnPropertyChanged(args);
+        }
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -45,7 +54,7 @@ public class TmEffectsViewModel : ObservableRecipient
         base.OnPropertyChanged(e);
     }
 
-    private ObservableCollection<EffectBase> _effectList = new(EffectsHandler.Effects); // TODO
+    private ObservableCollection<EffectBase> _effectList; // TODO
 
     public ObservableCollection<EffectBase> EffectList
     {
@@ -61,6 +70,19 @@ public class TmEffectsViewModel : ObservableRecipient
     {
         SettingsEffectBits = settingsHandler.ActiveSettings.TmSettings.BitAmount.ToString();
         SettingsExeName = settingsHandler.ActiveSettings.TmSettings.ProcessName;
+
+        foreach (XmlEffectSetting effectSetting in settingsHandler.ActiveSettings.TmSettings.EffectSettings)
+        {
+            EffectBase? effect = _effectList.FirstOrDefault(effect =>
+                string.Equals(effect.DisplayName, effectSetting.DisplayName, StringComparison.OrdinalIgnoreCase)
+            );
+
+            if (effect == null)
+                continue;
+
+            effect.Weight = effectSetting.Weight;
+            effect.Enabled = effectSetting.Enabled;
+        }
     }
 
     public void SaveSettings(SettingsHandler settingsHandler)
@@ -70,6 +92,12 @@ public class TmEffectsViewModel : ObservableRecipient
             : 0;
 
         settingsHandler.ActiveSettings.TmSettings.ProcessName = SettingsExeName;
+
+        settingsHandler.ActiveSettings.TmSettings.EffectSettings.Clear();
+        foreach (EffectBase effectBase in _effectList)
+        {
+            settingsHandler.ActiveSettings.TmSettings.EffectSettings.Add(new XmlEffectSetting(effectBase));
+        }
     }
 
     #endregion

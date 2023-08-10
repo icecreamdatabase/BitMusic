@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace BitMusic.Settings;
 
@@ -9,4 +10,8 @@ public class XmlTmSettings
 
     [XmlElement("BitAmount")]
     public int BitAmount;
+    
+    [XmlArray("Effects")]
+    [XmlArrayItem("Effect")]
+    public List<XmlEffectSetting> EffectSettings = new();
 }
