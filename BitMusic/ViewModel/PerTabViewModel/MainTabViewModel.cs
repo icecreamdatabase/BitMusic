@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Linq;
+using BitMusic.FileWriters;
 using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.Settings;
@@ -141,7 +142,7 @@ public class MainTabViewModel : ObservableRecipient
     {
         MusicEnabledCheckbox = settingsHandler.ActiveSettings.MusicEnabled;
         EffectsEnabledCheckbox = settingsHandler.ActiveSettings.EffectsEnabled;
-        ChannelTextBoxText = settingsHandler.ActiveSettings.Channel;
+        ChannelTextBoxText = settingsHandler.ActiveSettings.Channel.ToLowerInvariant();
 
         if (!_botInstance.Channels.Contains(ChannelTextBoxText))
         {
@@ -151,14 +152,14 @@ public class MainTabViewModel : ObservableRecipient
             _textBoxLogger.WriteLine($"Joining channel: {ChannelTextBoxText}");
         }
 
-        _botInstance.Channels.Set(ChannelTextBoxText);
+        _botInstance.Channels.Set(ChannelTextBoxText.ToLowerInvariant());
 
         _obsFileWriter.UpdateText(VolumeSlider, SpeedSlider);
     }
 
     public void SaveSettings(SettingsHandler settingsHandler)
     {
-        settingsHandler.ActiveSettings.Channel = ChannelTextBoxText;
+        settingsHandler.ActiveSettings.Channel = ChannelTextBoxText.ToLowerInvariant();
         settingsHandler.ActiveSettings.MusicEnabled = MusicEnabledCheckbox;
         settingsHandler.ActiveSettings.EffectsEnabled = EffectsEnabledCheckbox;
     }

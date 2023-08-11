@@ -18,6 +18,7 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+
     </ItemGroup>
 
 

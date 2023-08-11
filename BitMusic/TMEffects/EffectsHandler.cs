@@ -42,11 +42,11 @@ public static class EffectsHandler
         new SpamTwoKeys("Spam A D", true, 1, "a", "d", 2000),
 
         new DisplayRotationEffect("Rotate display to 90°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw90, 5000),
+            DisplayRotationHelper.Orientations.DegreesCw90, 15000),
         new DisplayRotationEffect("Rotate display to 180°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw180, 5000),
+            DisplayRotationHelper.Orientations.DegreesCw180, 15000),
         new DisplayRotationEffect("Rotate display to 270°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw270, 5000),
+            DisplayRotationHelper.Orientations.DegreesCw270, 15000),
 
         new AhkMutespam("Spam system mute", true, 1, 5000),
         new PressKey("Open Windows Magnifier", true, 1, "LWin down}{NumpadAdd}{LWin up"),

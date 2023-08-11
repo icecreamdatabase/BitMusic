@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using BitMusic.FileWriters;
 using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.Settings;
@@ -26,6 +27,7 @@ public class BitMusicViewModel : ObservableRecipient
 
     private readonly MusicPlayer _musicPlayer;
     private readonly ObsFileWriter _obsFileWriter;
+    private readonly EffectsFileWriter _effectsFileWriter;
 
     //private readonly OBSWebsocket _ws;
 
@@ -39,14 +41,16 @@ public class BitMusicViewModel : ObservableRecipient
     {
         FileInfo settingsFile = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.xml"));
         FileInfo obsFile = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "obs.txt"));
+        FileInfo obsEffectsFile = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "obsEffects.txt"));
         _settingsHandler = new SettingsHandler(settingsFile);
 
         _textBoxLogger = new TextBoxLogger(this);
+        _obsFileWriter = new ObsFileWriter(_textBoxLogger, _settingsHandler, obsFile);
+        _effectsFileWriter = new EffectsFileWriter(_textBoxLogger, obsEffectsFile);
         _musicPlayer = new MusicPlayer(this, _textBoxLogger);
 
         _botInstance = new BotInstance("justinfan1234", "1234");
-        _bitHandler = new BitHandler(this, _textBoxLogger, _botInstance, _settingsHandler);
-        _obsFileWriter = new ObsFileWriter(_textBoxLogger, _settingsHandler, obsFile);
+        _bitHandler = new BitHandler(this, _textBoxLogger, _botInstance, _settingsHandler, _effectsFileWriter);
 
         _botInstance.OnNewIrcNamReply += NewIrcNamReply;
 

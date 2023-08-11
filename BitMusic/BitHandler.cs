@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Windows;
+using BitMusic.FileWriters;
 using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.IrcBot.Irc.DataTypes.FromTwitch;
@@ -17,6 +18,7 @@ public class BitHandler
     private readonly BitMusicViewModel _bitMusicViewModel;
     private readonly TextBoxLogger _textBoxLogger;
     private readonly SettingsHandler _settingsHandler;
+    private readonly EffectsFileWriter _effectsFileWriter;
     private readonly BotInstance _botInstance;
 
     #endregion
@@ -24,11 +26,12 @@ public class BitHandler
     #region Constructor
 
     public BitHandler(BitMusicViewModel bitMusicViewModel, TextBoxLogger textBoxLogger, BotInstance botInstance,
-        SettingsHandler settingsHandler)
+        SettingsHandler settingsHandler, EffectsFileWriter effectsFileWriter)
     {
         _bitMusicViewModel = bitMusicViewModel;
         _textBoxLogger = textBoxLogger;
         _settingsHandler = settingsHandler;
+        _effectsFileWriter = effectsFileWriter;
         _botInstance = botInstance;
 
         _botInstance.OnNewIrcPrivMsg += NewIrcPrivMsg;
@@ -46,8 +49,10 @@ public class BitHandler
 
         if (ircPrivMsg.UserId == 38949074 && ircPrivMsg.Message.StartsWith("!tmtest"))
         {
+#if DEBUG
             Thread.Sleep(10000);
-            TmEffectsHandling(_settingsHandler.ActiveSettings.TmSettings.BitAmount);
+#endif
+            TmEffectsHandling(_settingsHandler.ActiveSettings.TmSettings.BitAmount, ircPrivMsg.UserName);
         }
 
         if (ircPrivMsg.Bits == null)
@@ -58,11 +63,11 @@ public class BitHandler
         if (!int.TryParse(ircPrivMsg.Bits, out int bits))
             return;
 
-        TmEffectsHandling(bits);
+        TmEffectsHandling(bits, ircPrivMsg.UserName);
         MusicHandling(bits);
     }
 
-    private void TmEffectsHandling(int bits)
+    private void TmEffectsHandling(int bits, string userNameWhoTriggeredTheEffect)
     {
         if (!_bitMusicViewModel.MainTabViewModel.EffectsEnabledCheckbox)
             return;
@@ -73,7 +78,10 @@ public class BitHandler
         string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
         EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList.ExecuteRandomEffectByWeight(processName);
         if (effect != null)
+        {
+            _effectsFileWriter.AddNewEffect(effect, userNameWhoTriggeredTheEffect);
             _textBoxLogger.WriteLine(effect.GetConsoleOutput());
+        }
         else
             _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
     }

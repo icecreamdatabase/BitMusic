@@ -3,7 +3,7 @@ using System.IO;
 using BitMusic.Helper;
 using BitMusic.Settings;
 
-namespace BitMusic;
+namespace BitMusic.FileWriters;
 
 public class ObsFileWriter
 {
