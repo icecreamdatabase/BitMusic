@@ -19,6 +19,10 @@ public static class EffectsHandler
         new PressKey("Switch to cam 3", true, 1, "Numpad3"),
         new PressKey("Switch to cam 7", true, 1, "Numpad7"),
 
+        new PressTwoKeysWithDelay("Temporarily switch to cam 2", true, 1, "Numpad2", "Numpad1", 5000),
+        new PressTwoKeysWithDelay("Temporarily switch to cam 3", true, 1, "Numpad3", "Numpad1", 5000),
+        new PressTwoKeysWithDelay("Temporarily switch to cam 7", true, 1, "Numpad7", "Numpad1", 5000),
+
         new HoldKey("Honk horn", true, 1, "Numpad0", 5000),
         new HoldKey("Hold action key 1", true, 1, "1", 5000),
         new HoldKey("Hold action key 2", true, 1, "2", 5000),
