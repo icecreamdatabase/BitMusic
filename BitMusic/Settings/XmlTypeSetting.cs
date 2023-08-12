@@ -7,16 +7,16 @@ namespace BitMusic.Settings;
 public class XmlTypeSetting
 {
     [XmlElement("Up")]
-    public int Up;
+    public uint Up;
 
     [XmlElement("Down")]
-    public int Down;
+    public uint Down;
 
     [XmlElement("Max")]
-    public int Max;
+    public uint Max;
 
     [XmlElement("Min")]
-    public int Min;
+    public uint Min;
     
     [XmlElement("MaxText")]
     public string MaxText = string.Empty;

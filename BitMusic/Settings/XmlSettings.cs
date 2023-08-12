@@ -24,7 +24,7 @@ public class XmlSettings
     };
 
     [XmlElement("Skip")]
-    public int Skip;
+    public uint Skip;
 
     [XmlElement("Volume")]
     public XmlTypeSetting Volume = new()

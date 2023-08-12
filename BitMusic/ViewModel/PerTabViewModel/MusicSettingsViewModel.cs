@@ -25,41 +25,41 @@ public class MusicSettingsViewModel : ObservableRecipient
 
     #region Bound Properties
 
-    private string _settingsSkip = string.Empty;
+    private uint _settingsSkip;
 
-    public string SettingsSkip
+    public uint SettingsSkip
     {
         get => _settingsSkip;
         set => SetProperty(ref _settingsSkip, value);
     }
 
-    private string _settingsVolumeUp = string.Empty;
+    private uint _settingsVolumeUp;
 
-    public string SettingsVolumeUp
+    public uint SettingsVolumeUp
     {
         get => _settingsVolumeUp;
         set => SetProperty(ref _settingsVolumeUp, value);
     }
 
-    private string _settingsVolumeDown = string.Empty;
+    private uint _settingsVolumeDown;
 
-    public string SettingsVolumeDown
+    public uint SettingsVolumeDown
     {
         get => _settingsVolumeDown;
         set => SetProperty(ref _settingsVolumeDown, value);
     }
 
-    private string _settingsVolumeMax = string.Empty;
+    private uint _settingsVolumeMax;
 
-    public string SettingsVolumeMax
+    public uint SettingsVolumeMax
     {
         get => _settingsVolumeMax;
         set => SetProperty(ref _settingsVolumeMax, value);
     }
 
-    private string _settingsVolumeMin = string.Empty;
+    private uint _settingsVolumeMin;
 
-    public string SettingsVolumeMin
+    public uint SettingsVolumeMin
     {
         get => _settingsVolumeMin;
         set => SetProperty(ref _settingsVolumeMin, value);
@@ -89,33 +89,33 @@ public class MusicSettingsViewModel : ObservableRecipient
         set => SetProperty(ref _settingsVolumeSteps, value);
     }
 
-    private string _settingsSpeedUp = string.Empty;
+    private uint _settingsSpeedUp;
 
-    public string SettingsSpeedUp
+    public uint SettingsSpeedUp
     {
         get => _settingsSpeedUp;
         set => SetProperty(ref _settingsSpeedUp, value);
     }
 
-    private string _settingsSpeedDown = string.Empty;
+    private uint _settingsSpeedDown;
 
-    public string SettingsSpeedDown
+    public uint SettingsSpeedDown
     {
         get => _settingsSpeedDown;
         set => SetProperty(ref _settingsSpeedDown, value);
     }
 
-    private string _settingsSpeedMax = string.Empty;
+    private uint _settingsSpeedMax;
 
-    public string SettingsSpeedMax
+    public uint SettingsSpeedMax
     {
         get => _settingsSpeedMax;
         set => SetProperty(ref _settingsSpeedMax, value);
     }
 
-    private string _settingsSpeedMin = string.Empty;
+    private uint _settingsSpeedMin;
 
-    public string SettingsSpeedMin
+    public uint SettingsSpeedMin
     {
         get => _settingsSpeedMin;
         set => SetProperty(ref _settingsSpeedMin, value);
@@ -208,18 +208,20 @@ public class MusicSettingsViewModel : ObservableRecipient
 
     public void LoadSettings(SettingsHandler settingsHandler)
     {
-        SettingsSkip = settingsHandler.ActiveSettings.Skip.ToString();
-        SettingsVolumeUp = settingsHandler.ActiveSettings.Volume.Up.ToString();
-        SettingsVolumeDown = settingsHandler.ActiveSettings.Volume.Down.ToString();
-        SettingsVolumeMax = settingsHandler.ActiveSettings.Volume.Max.ToString();
-        SettingsVolumeMin = settingsHandler.ActiveSettings.Volume.Min.ToString();
+        SettingsSkip = settingsHandler.ActiveSettings.Skip;
+        
+        SettingsVolumeUp = settingsHandler.ActiveSettings.Volume.Up;
+        SettingsVolumeDown = settingsHandler.ActiveSettings.Volume.Down;
+        SettingsVolumeMax = settingsHandler.ActiveSettings.Volume.Max;
+        SettingsVolumeMin = settingsHandler.ActiveSettings.Volume.Min;
         SettingsVolumeMaxText = settingsHandler.ActiveSettings.Volume.MaxText;
         SettingsVolumeMinText = settingsHandler.ActiveSettings.Volume.MinText;
         SettingsVolumeSteps = settingsHandler.ActiveSettings.Volume.StepsString;
-        SettingsSpeedUp = settingsHandler.ActiveSettings.Speed.Up.ToString();
-        SettingsSpeedDown = settingsHandler.ActiveSettings.Speed.Down.ToString();
-        SettingsSpeedMax = settingsHandler.ActiveSettings.Speed.Max.ToString();
-        SettingsSpeedMin = settingsHandler.ActiveSettings.Speed.Min.ToString();
+        
+        SettingsSpeedUp = settingsHandler.ActiveSettings.Speed.Up;
+        SettingsSpeedDown = settingsHandler.ActiveSettings.Speed.Down;
+        SettingsSpeedMax = settingsHandler.ActiveSettings.Speed.Max;
+        SettingsSpeedMin = settingsHandler.ActiveSettings.Speed.Min;
         SettingsSpeedMaxText = settingsHandler.ActiveSettings.Speed.MaxText;
         SettingsSpeedMinText = settingsHandler.ActiveSettings.Speed.MinText;
         SettingsSpeedSteps = settingsHandler.ActiveSettings.Speed.StepsString;
@@ -231,38 +233,20 @@ public class MusicSettingsViewModel : ObservableRecipient
 
     public void SaveSettings(SettingsHandler settingsHandler)
     {
-        settingsHandler.ActiveSettings.Skip = int.TryParse(SettingsSkip, out int settingsSkip)
-            ? settingsSkip
-            : 0;
+        settingsHandler.ActiveSettings.Skip = SettingsSkip;
 
-        settingsHandler.ActiveSettings.Volume.Up = int.TryParse(SettingsVolumeUp, out int settingsVolumeUp)
-            ? settingsVolumeUp
-            : 0;
-        settingsHandler.ActiveSettings.Volume.Down = int.TryParse(SettingsVolumeDown, out int settingsVolumeDown)
-            ? settingsVolumeDown
-            : 0;
-        settingsHandler.ActiveSettings.Volume.Max = int.TryParse(SettingsVolumeMax, out int settingsVolumeMax)
-            ? settingsVolumeMax
-            : 0;
-        settingsHandler.ActiveSettings.Volume.Min = int.TryParse(SettingsVolumeMin, out int settingsVolumeMin)
-            ? settingsVolumeMin
-            : 0;
+        settingsHandler.ActiveSettings.Volume.Up = SettingsVolumeUp;
+        settingsHandler.ActiveSettings.Volume.Down = SettingsVolumeDown;
+        settingsHandler.ActiveSettings.Volume.Max = SettingsVolumeMax;
+        settingsHandler.ActiveSettings.Volume.Min = SettingsVolumeMin;
         settingsHandler.ActiveSettings.Volume.MaxText = SettingsVolumeMaxText;
         settingsHandler.ActiveSettings.Volume.MinText = SettingsVolumeMinText;
         settingsHandler.ActiveSettings.Volume.StepsString = SettingsVolumeSteps;
 
-        settingsHandler.ActiveSettings.Speed.Up = int.TryParse(SettingsSpeedUp, out int settingsSpeedUp)
-            ? settingsSpeedUp
-            : 0;
-        settingsHandler.ActiveSettings.Speed.Down = int.TryParse(SettingsSpeedDown, out int settingsSpeedDown)
-            ? settingsSpeedDown
-            : 0;
-        settingsHandler.ActiveSettings.Speed.Max = int.TryParse(SettingsSpeedMax, out int settingsSpeedMax)
-            ? settingsSpeedMax
-            : 0;
-        settingsHandler.ActiveSettings.Speed.Min = int.TryParse(SettingsSpeedMin, out int settingsSpeedMin)
-            ? settingsSpeedMin
-            : 0;
+        settingsHandler.ActiveSettings.Speed.Up = SettingsSpeedUp;
+        settingsHandler.ActiveSettings.Speed.Down = SettingsSpeedDown;
+        settingsHandler.ActiveSettings.Speed.Max = SettingsSpeedMax;
+        settingsHandler.ActiveSettings.Speed.Min = SettingsSpeedMin;
         settingsHandler.ActiveSettings.Speed.MaxText = SettingsSpeedMaxText;
         settingsHandler.ActiveSettings.Speed.MinText = SettingsSpeedMinText;
         settingsHandler.ActiveSettings.Speed.StepsString = SettingsSpeedSteps;
