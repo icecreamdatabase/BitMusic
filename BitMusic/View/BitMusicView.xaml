@@ -285,6 +285,7 @@
                             <RowDefinition Height="5px" />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center">Setting</Label>
@@ -298,6 +299,11 @@
                         <Label Grid.Row="3" Grid.Column="0">.exe name:</Label>
                         <TextBox Grid.Row="3" Grid.Column="1"
                                  Text="{Binding TmEffectsViewModel.SettingsExeName}"
+                                 HorizontalContentAlignment="Right" />
+                        
+                        <Label Grid.Row="4" Grid.Column="0">Main Display Number:</Label>
+                        <TextBox Grid.Row="4" Grid.Column="1"
+                                 Text="{Binding TmEffectsViewModel.SettingsMainDisplayNumber}"
                                  HorizontalContentAlignment="Right" />
                     </Grid>
 

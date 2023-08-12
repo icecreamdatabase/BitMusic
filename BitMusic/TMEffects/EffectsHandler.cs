@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BitMusic.Settings;
 using BitMusic.TMEffects.EffectHelper;
 using BitMusic.TMEffects.EffectTypes;
 
@@ -18,35 +19,36 @@ public static class EffectsHandler
         new PressKey("Switch to cam 2", true, 1, "Numpad2"),
         new PressKey("Switch to cam 3", true, 1, "Numpad3"),
         new PressKey("Switch to cam 7", true, 1, "Numpad7"),
+        new PressKey("Next Song", true, 1, "Media_Next"),
 
         new PressTwoKeysWithDelay("Temporarily switch to cam 2", true, 1, "Numpad2", "Numpad1", 5000),
         new PressTwoKeysWithDelay("Temporarily switch to cam 3", true, 1, "Numpad3", "Numpad1", 5000),
         new PressTwoKeysWithDelay("Temporarily switch to cam 7", true, 1, "Numpad7", "Numpad1", 5000),
 
-        new HoldKey("Honk horn", true, 1, "Numpad0", 5000),
-        new HoldKey("Hold action key 1", true, 1, "1", 5000),
-        new HoldKey("Hold action key 2", true, 1, "2", 5000),
-        new HoldKey("Hold action key 3", true, 1, "3", 5000),
-        new HoldKey("Hold action key 4", true, 1, "4", 5000),
-        new HoldKey("Hold action key 5", true, 1, "5", 5000),
+        new HoldKey("Honk horn", true, 1, "Numpad0", 5_000),
+        new HoldKey("Hold action key 1", true, 1, "1", 5_000),
+        new HoldKey("Hold action key 2", true, 1, "2", 5_000),
+        new HoldKey("Hold action key 3", true, 1, "3", 5_000),
+        new HoldKey("Hold action key 4", true, 1, "4", 5_000),
+        new HoldKey("Hold action key 5", true, 1, "5", 5_000),
 
-        new SpamKey("Spam Cam 1", true, 1, "Numpad1", 5000),
-        new SpamKey("Spam Cam 2", true, 1, "Numpad2", 5000),
-        new SpamKey("Spam Cam 3", true, 1, "Numpad3", 5000),
-        new SpamKey("Spam W", true, 1, "w", 2000),
-        new SpamKey("Spam S", true, 1, "s", 2000),
-        new SpamKey("Spam A", true, 1, "a", 2000),
-        new SpamKey("Spam D", true, 1, "d", 2000),
+        new SpamKey("Spam Cam 1", true, 1, "Numpad1", 5_000),
+        new SpamKey("Spam Cam 2", true, 1, "Numpad2", 5_000),
+        new SpamKey("Spam Cam 3", true, 1, "Numpad3", 5_000),
+        new SpamKey("Spam W", true, 1, "w", 2_000),
+        new SpamKey("Spam S", true, 1, "s", 2_000),
+        new SpamKey("Spam A", true, 1, "a", 2_000),
+        new SpamKey("Spam D", true, 1, "d", 2_000),
 
-        new SpamTwoKeys("Spam W S", true, 1, "w", "s", 2000),
-        new SpamTwoKeys("Spam A D", true, 1, "a", "d", 2000),
+        new SpamTwoKeys("Spam W S", true, 1, "w", "s", 2_000),
+        new SpamTwoKeys("Spam A D", true, 1, "a", "d", 2_000),
 
-        new DisplayRotationEffect("Rotate display to 90°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw90, 15000),
-        new DisplayRotationEffect("Rotate display to 180°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw180, 15000),
-        new DisplayRotationEffect("Rotate display to 270°", true, 1, 1,
-            DisplayRotationHelper.Orientations.DegreesCw270, 15000),
+        new DisplayRotationEffect("Rotate display to 90°", true, 1,
+            DisplayRotationHelper.Orientations.DegreesCw90, 15_000),
+        new DisplayRotationEffect("Rotate display to 180°", true, 1,
+            DisplayRotationHelper.Orientations.DegreesCw180, 15_000),
+        new DisplayRotationEffect("Rotate display to 270°", true, 1,
+            DisplayRotationHelper.Orientations.DegreesCw270, 15_000),
 
         new AhkMutespam("Spam system mute", true, 1, 5000),
         new PressKey("Open Windows Magnifier", true, 1, "LWin down}{NumpadAdd}{LWin up"),
@@ -66,6 +68,8 @@ public static class EffectsHandler
     private static long TotalWeight(this IEnumerable<EffectBase> effects) =>
         effects.Where(effect => effect.Enabled).Sum(effect => effect.Weight);
 
+    private static EffectBase _previousEffect = new DummyEffect();
+
     /// <summary>
     /// Weighted random selection<br/>
     /// https://www.educative.io/answers/what-is-the-weighted-random-selection-algorithm <br/>
@@ -74,12 +78,20 @@ public static class EffectsHandler
     /// <returns></returns>
     private static EffectBase? SelectRandomEffectByWeight(this ICollection<EffectBase> effects)
     {
-        long randomIndexForWeightCalc = WeightRandom.NextInt64(0, TotalWeight(effects));
+        // TODO: Don't allow the same effect twice in a row
+        long randomIndexForWeightCalc = WeightRandom.NextInt64(
+            0,
+            effects.Except(new[] { _previousEffect }).TotalWeight()
+        );
 
-        foreach (EffectBase effect in effects.Where(effect => effect.Enabled))
+        foreach (EffectBase effect in effects.Except(new[] { _previousEffect }).Where(effect => effect.Enabled))
         {
             if (randomIndexForWeightCalc < effect.Weight)
+            {
+                // TODO Temp disabled before I have a setting for it.
+                //_previousEffect = effect;
                 return effect;
+            }
 
             randomIndexForWeightCalc -= effect.Weight;
         }
@@ -88,7 +100,8 @@ public static class EffectsHandler
         return null;
     }
 
-    public static EffectBase? ExecuteRandomEffectByWeight(this ICollection<EffectBase> effects, string processName)
+    public static EffectBase? ExecuteRandomEffectByWeight(this ICollection<EffectBase> effects,
+        XmlTmSettings tmSettings)
     {
         EffectBase? randomEffect = SelectRandomEffectByWeight(effects);
 
@@ -96,7 +109,7 @@ public static class EffectsHandler
         if (randomEffect == null)
             return null;
 
-        randomEffect.Execute(processName);
+        randomEffect.Execute(tmSettings);
         return randomEffect;
     }
 

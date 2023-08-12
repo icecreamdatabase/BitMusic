@@ -9,7 +9,10 @@ public class XmlTmSettings
     public string ProcessName = string.Empty;
 
     [XmlElement("BitAmount")]
-    public int BitAmount;
+    public uint BitAmount;
+    
+    [XmlElement("MainDisplayNumber")]
+    public uint MainDisplayNumber = 1;
     
     [XmlArray("Effects")]
     [XmlArrayItem("Effect")]

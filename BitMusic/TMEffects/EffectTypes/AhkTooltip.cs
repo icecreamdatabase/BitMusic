@@ -1,4 +1,5 @@
 ﻿using System;
+using BitMusic.Settings;
 using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
@@ -19,10 +20,10 @@ public class AhkTooltip : EffectBase
         Jumps = jumps;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{processName}}"
+                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}"
                         Loop, {{Jumps}} {
                             Random, xOffset, -300, 300
                             Random, yOffset, -300, 300

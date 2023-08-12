@@ -1,25 +1,24 @@
 ﻿using System.Threading.Tasks;
+using BitMusic.Settings;
 using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
 public class DisplayRotationEffect : EffectBase
 {
-    public uint DisplayNumber { get; }
     public DisplayRotationHelper.Orientations Orientation { get; }
     public int DurationMs { get; }
 
-    public DisplayRotationEffect(string displayName, bool enabled, uint weight, uint displayNumber,
+    public DisplayRotationEffect(string displayName, bool enabled, uint weight,
         DisplayRotationHelper.Orientations orientation, int durationMs) : base(displayName, enabled, weight)
     {
-        DisplayNumber = displayNumber;
         Orientation = orientation;
         DurationMs = durationMs;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
-        Task.Run(() => DisplayRotationTask(DisplayNumber, Orientation, DurationMs));
+        Task.Run(() => DisplayRotationTask(tmSettings.MainDisplayNumber, Orientation, DurationMs));
     }
 
     private static void DisplayRotationTask(uint displayNumber, DisplayRotationHelper.Orientations orientation,

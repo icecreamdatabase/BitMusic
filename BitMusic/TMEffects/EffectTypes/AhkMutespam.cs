@@ -1,4 +1,5 @@
-﻿using BitMusic.TMEffects.EffectHelper;
+﻿using BitMusic.Settings;
+using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -16,12 +17,12 @@ public class AhkMutespam : EffectBase
         UnmuteDurationMs = unmuteDurationMs;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(MuteDurationMs + UnmuteDurationMs));
 
         string code = $$"""
-                        #IfWinActive ahk_exe {{processName}}
+                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
                         Loop, {{repeatCount}} {
                             SoundSet, +1,, Mute
                             Sleep, {{MuteDurationMs}}

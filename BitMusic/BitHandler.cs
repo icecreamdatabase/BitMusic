@@ -52,7 +52,7 @@ public class BitHandler
 #if DEBUG
             Thread.Sleep(10000);
 #endif
-            TmEffectsHandling(_settingsHandler.ActiveSettings.TmSettings.BitAmount, ircPrivMsg.UserName);
+            TmEffectsHandling((int)_settingsHandler.ActiveSettings.TmSettings.BitAmount, ircPrivMsg.UserName);
         }
 
         if (ircPrivMsg.Bits == null)
@@ -75,8 +75,8 @@ public class BitHandler
         if (bits != _settingsHandler.ActiveSettings.TmSettings.BitAmount)
             return;
 
-        string processName = _settingsHandler.ActiveSettings.TmSettings.ProcessName;
-        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList.ExecuteRandomEffectByWeight(processName);
+        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList
+            .ExecuteRandomEffectByWeight(_settingsHandler.ActiveSettings.TmSettings);
         if (effect != null)
         {
             _effectsFileWriter.AddNewEffect(effect, userNameWhoTriggeredTheEffect);

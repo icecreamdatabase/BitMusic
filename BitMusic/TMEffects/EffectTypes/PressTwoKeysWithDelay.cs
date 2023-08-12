@@ -1,4 +1,5 @@
-﻿using BitMusic.TMEffects.EffectHelper;
+﻿using BitMusic.Settings;
+using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -15,10 +16,10 @@ public class PressTwoKeysWithDelay : PressKey
         DelayBetweenKeys = delayBetweenKeys;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{processName}}
+                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
                         Send , {{{AhkKeyCode}}}
                         Sleep, {{DelayBetweenKeys}}
                         Send , {{{AhkKeyCode2}}}

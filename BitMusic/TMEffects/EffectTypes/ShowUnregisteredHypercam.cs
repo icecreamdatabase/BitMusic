@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using BitMusic.Settings;
 using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
@@ -14,7 +15,7 @@ public class ShowUnregisteredHypercam : EffectBase
         _durationMs = durationMs;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         Task.Run(() => ExecuteTask(_durationMs));
     }

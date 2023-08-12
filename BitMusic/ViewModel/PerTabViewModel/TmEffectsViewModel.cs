@@ -13,9 +13,9 @@ public class TmEffectsViewModel : ObservableRecipient
 {
     #region Properties
 
-    private string _settingsEffectBits = string.Empty;
+    private uint _settingsEffectBits = 0;
 
-    public string SettingsEffectBits
+    public uint SettingsEffectBits
     {
         get => _settingsEffectBits;
         set => SetProperty(ref _settingsEffectBits, value);
@@ -27,6 +27,14 @@ public class TmEffectsViewModel : ObservableRecipient
     {
         get => _settingsExeName;
         set => SetProperty(ref _settingsExeName, value);
+    }
+    
+    private uint _settingsMainDisplayNumber = 1;
+
+    public uint SettingsMainDisplayNumber
+    {
+        get => _settingsMainDisplayNumber;
+        set => SetProperty(ref _settingsMainDisplayNumber, value);
     }
 
     private ObservableCollection<EffectBase> _effectList;
@@ -70,8 +78,9 @@ public class TmEffectsViewModel : ObservableRecipient
 
     public void LoadSettings(SettingsHandler settingsHandler)
     {
-        SettingsEffectBits = settingsHandler.ActiveSettings.TmSettings.BitAmount.ToString();
+        SettingsEffectBits = settingsHandler.ActiveSettings.TmSettings.BitAmount;
         SettingsExeName = settingsHandler.ActiveSettings.TmSettings.ProcessName;
+        SettingsMainDisplayNumber = settingsHandler.ActiveSettings.TmSettings.MainDisplayNumber;
 
         foreach (XmlEffectSetting effectSetting in settingsHandler.ActiveSettings.TmSettings.EffectSettings)
         {
@@ -89,11 +98,10 @@ public class TmEffectsViewModel : ObservableRecipient
 
     public void SaveSettings(SettingsHandler settingsHandler)
     {
-        settingsHandler.ActiveSettings.TmSettings.BitAmount = int.TryParse(SettingsEffectBits, out int parsedBits)
-            ? parsedBits
-            : 0;
+        settingsHandler.ActiveSettings.TmSettings.BitAmount = SettingsEffectBits;
 
         settingsHandler.ActiveSettings.TmSettings.ProcessName = SettingsExeName;
+        settingsHandler.ActiveSettings.TmSettings.MainDisplayNumber = SettingsMainDisplayNumber;
 
         settingsHandler.ActiveSettings.TmSettings.EffectSettings.Clear();
         foreach (EffectBase effectBase in _effectList)

@@ -1,4 +1,5 @@
-﻿using BitMusic.TMEffects.EffectHelper;
+﻿using BitMusic.Settings;
+using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -11,10 +12,10 @@ public class AhkMsgBox : EffectBase
         Text = text;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{processName}}"
+                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}"
                         MsgBox, {{Text}}
                         """;
 

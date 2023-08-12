@@ -1,4 +1,5 @@
-﻿using BitMusic.TMEffects.EffectHelper;
+﻿using BitMusic.Settings;
+using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -17,12 +18,12 @@ public class SpamTwoKeys : HoldKey
         HoldTimeMsAhkKeyCode2 = holdTimeMsAhkKeyCode2;
     }
 
-    public override void Execute(string processName)
+    public override void Execute(XmlTmSettings tmSettings)
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + HoldTimeMsAhkKeyCode2 + 5 + 5));
 
         string code = $$"""
-                        #IfWinActive ahk_exe {{processName}}
+                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
                         Loop, {{repeatCount}} {
                             Send , {{{AhkKeyCode}} down}
                             Sleep, {{HoldTimeMs}}

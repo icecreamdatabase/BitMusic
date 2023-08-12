@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BitMusic.Settings;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -34,5 +35,5 @@ public abstract class EffectBase : ObservableRecipient
         return $"✨ {DisplayName}";
     }
 
-    public abstract void Execute(string processName);
+    public abstract void Execute(XmlTmSettings tmSettings);
 }
