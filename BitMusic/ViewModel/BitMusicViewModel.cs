@@ -54,9 +54,9 @@ public class BitMusicViewModel : ObservableRecipient
 
         _botInstance.OnNewIrcNamReply += NewIrcNamReply;
 
-        MainTabViewModel = new(this, _textBoxLogger, _obsFileWriter, _musicPlayer, _botInstance);
-        MusicSettingsViewModel = new(this);
-        TmEffectsViewModel = new(this);
+        MainTabViewModel = new MainTabViewModel(this, _textBoxLogger, _obsFileWriter, _musicPlayer, _botInstance);
+        MusicSettingsViewModel = new MusicSettingsViewModel(this);
+        TmEffectsViewModel = new TmEffectsViewModel(this, _settingsHandler);
 
         LoadSettings();
 

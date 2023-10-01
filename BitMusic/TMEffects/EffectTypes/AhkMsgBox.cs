@@ -7,15 +7,16 @@ public class AhkMsgBox : EffectBase
 {
     public string Text { get; }
 
-    public AhkMsgBox(string displayName, bool enabled, uint weight, string text) : base(displayName, enabled, weight)
+    public AhkMsgBox(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight, string text) :
+        base(settingsHandler, displayName, enabled, weight)
     {
         Text = text;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}"
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}"
                         MsgBox, {{Text}}
                         """;
 

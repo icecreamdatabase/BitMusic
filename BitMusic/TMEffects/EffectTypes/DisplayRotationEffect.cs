@@ -9,16 +9,17 @@ public class DisplayRotationEffect : EffectBase
     public DisplayRotationHelper.Orientations Orientation { get; }
     public int DurationMs { get; }
 
-    public DisplayRotationEffect(string displayName, bool enabled, uint weight,
-        DisplayRotationHelper.Orientations orientation, int durationMs) : base(displayName, enabled, weight)
+    public DisplayRotationEffect(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight,
+        DisplayRotationHelper.Orientations orientation, int durationMs) :
+        base(settingsHandler, displayName, enabled, weight)
     {
         Orientation = orientation;
         DurationMs = durationMs;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
-        Task.Run(() => DisplayRotationTask(tmSettings.MainDisplayNumber, Orientation, DurationMs));
+        Task.Run(() => DisplayRotationTask(TmSettings.MainDisplayNumber, Orientation, DurationMs));
     }
 
     private static void DisplayRotationTask(uint displayNumber, DisplayRotationHelper.Orientations orientation,

@@ -7,20 +7,21 @@ public class HoldKey : PressKey
 {
     public int ActiveTimeMs { get; }
 
-    public HoldKey(string displayName, bool enabled, uint weight, string ahkKeyCode, int activeTimeMs) : base(displayName, enabled, weight, ahkKeyCode)
+    public HoldKey(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight, string ahkKeyCode,
+        int activeTimeMs) : base(settingsHandler, displayName, enabled, weight, ahkKeyCode)
     {
         ActiveTimeMs = activeTimeMs;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
-        string code =$$"""
-                 #IfWinActive ahk_exe {{tmSettings.ProcessName}}
-                 Send , {{{AhkKeyCode}} down}
-                 Sleep, {{ActiveTimeMs}}
-                 Send , {{{AhkKeyCode}} up}
-                 """;
-        
+        string code = $$"""
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}
+                        Send , {{{AhkKeyCode}} down}
+                        Sleep, {{ActiveTimeMs}}
+                        Send , {{{AhkKeyCode}} up}
+                        """;
+
         AhkHelper.ExecuteAhkScript(code);
     }
 }

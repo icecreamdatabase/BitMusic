@@ -75,15 +75,14 @@ public class BitHandler
         if (bits != _settingsHandler.ActiveSettings.TmSettings.BitAmount)
             return;
 
-        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList
-            .ExecuteRandomEffectByWeight(_settingsHandler.ActiveSettings.TmSettings);
+        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList.ExecuteRandomEffectByWeight();
         if (effect != null)
         {
             _effectsFileWriter.AddNewEffect(effect, userNameWhoTriggeredTheEffect);
             _textBoxLogger.WriteLine(effect.GetConsoleOutput());
         }
         else
-            _textBoxLogger.WriteLine("📻 No TM Keybinds defined");
+            _textBoxLogger.WriteLine("📻 No TM Effects enabled");
     }
 
     private void MusicHandling(int bits)

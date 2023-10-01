@@ -8,18 +8,18 @@ public class PressTwoKeysWithDelay : PressKey
     public string AhkKeyCode2 { get; }
     public int DelayBetweenKeys { get; }
 
-    public PressTwoKeysWithDelay(string displayName, bool enabled, uint weight, string ahkKeyCode, string ahkKeyCode2,
-        int delayBetweenKeys) : base(displayName, enabled, weight,
-        ahkKeyCode)
+    public PressTwoKeysWithDelay(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight,
+        string ahkKeyCode, string ahkKeyCode2, int delayBetweenKeys) :
+        base(settingsHandler, displayName, enabled, weight, ahkKeyCode)
     {
         AhkKeyCode2 = ahkKeyCode2;
         DelayBetweenKeys = delayBetweenKeys;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}
                         Send , {{{AhkKeyCode}}}
                         Sleep, {{DelayBetweenKeys}}
                         Send , {{{AhkKeyCode2}}}

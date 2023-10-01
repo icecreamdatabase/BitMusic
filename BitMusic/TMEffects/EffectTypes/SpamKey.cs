@@ -8,19 +8,20 @@ public class SpamKey : HoldKey
     public int HoldTimeMs { get; }
     public int ReleaseTimeMs { get; }
 
-    public SpamKey(string displayName, bool enabled, uint weight, string ahkKeyCode, int activeTimeMs, int holdTimeMs = 95, int releaseTimeMs = 5) :
-        base(displayName, enabled, weight, ahkKeyCode, activeTimeMs)
+    public SpamKey(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight, string ahkKeyCode,
+        int activeTimeMs, int holdTimeMs = 95, int releaseTimeMs = 5) :
+        base(settingsHandler, displayName, enabled, weight, ahkKeyCode, activeTimeMs)
     {
         HoldTimeMs = holdTimeMs;
         ReleaseTimeMs = releaseTimeMs;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + ReleaseTimeMs));
 
         string code = $$"""
-                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}
                         Loop, {{repeatCount}} {
                             Send , {{{AhkKeyCode}} down}
                             Sleep, {{HoldTimeMs}}

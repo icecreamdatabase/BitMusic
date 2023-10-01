@@ -312,12 +312,14 @@
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="225px" />
-                            <ColumnDefinition Width="75px" />
+                            <ColumnDefinition Width="60px" />
+                                                <ColumnDefinition Width="60px" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" HorizontalContentAlignment="Center">Effect</Label>
                             <Label Grid.Column="1" HorizontalContentAlignment="Center">Enabled</Label>
                             <Label Grid.Column="2" HorizontalContentAlignment="Center">Weight</Label>
+                            <Label Grid.Column="3" HorizontalContentAlignment="Center" Margin="0 0 20px 0">Test</Label>
                     </Grid>
                     <Border Grid.Row="4" Grid.Column="0" BorderThickness="0.5px " BorderBrush="Black">
                         <ScrollViewer Height="400"
@@ -329,7 +331,8 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="225px" />
-                                                <ColumnDefinition Width="75px" />
+                                                <ColumnDefinition Width="60px" />
+                                                <ColumnDefinition Width="60px" />
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
 
@@ -349,7 +352,7 @@
                                                     </CheckBox.LayoutTransform>
                                                 </CheckBox>
                                             </Border>
-                                            <Border Grid.Column="2" BorderThickness="0 0.5px 0 0.5px " 
+                                            <Border Grid.Column="2" BorderThickness="0 0.5px 0.5px 0.5px " 
                                                     BorderBrush="Black">
                                                 <TextBox
                                                     Text="{Binding Weight}"
@@ -357,6 +360,14 @@
                                                     Padding="5px 2px" Margin="2px" 
                                                     BorderThickness="0px"
                                                     />
+                                            </Border>
+                                            
+                                            <Border Grid.Column="3" BorderThickness="0 0.5px 0 0.5px " 
+                                                    BorderBrush="Black">
+                                                <Button Command="{Binding TestButton}"
+                                                        Content="{Binding TestButtonText}"
+                                                        Margin="5px 2px"
+                                                        Padding="5px 2px" />
                                             </Border>
                                         </Grid>
                                     </DataTemplate>

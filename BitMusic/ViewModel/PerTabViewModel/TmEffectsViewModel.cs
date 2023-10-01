@@ -55,10 +55,10 @@ public class TmEffectsViewModel : ObservableRecipient
 
     #region Constructor and Overrides
 
-    public TmEffectsViewModel(BitMusicViewModel bitMusicViewModel)
+    public TmEffectsViewModel(BitMusicViewModel bitMusicViewModel, SettingsHandler settingsHandler)
     {
         _bitMusicViewModel = bitMusicViewModel;
-        _effectList = new ObservableCollection<EffectBase>(EffectsHandler.DefaultEffects);
+        _effectList = new ObservableCollection<EffectBase>(EffectsHandler.GetDefaultEffects(settingsHandler));
         foreach (EffectBase effectBase in _effectList)
         {
             effectBase.PropertyChanged += (_, args) => OnPropertyChanged(args);

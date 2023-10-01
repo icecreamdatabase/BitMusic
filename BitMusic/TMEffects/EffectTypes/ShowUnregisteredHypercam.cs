@@ -9,13 +9,13 @@ public class ShowUnregisteredHypercam : EffectBase
 {
     private readonly int _durationMs;
 
-    public ShowUnregisteredHypercam(string displayName, bool enabled, uint weight, int durationMs) : base(displayName,
-        enabled, weight)
+    public ShowUnregisteredHypercam(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight,
+        int durationMs) : base(settingsHandler, displayName, enabled, weight)
     {
         _durationMs = durationMs;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         Task.Run(() => ExecuteTask(_durationMs));
     }
@@ -23,12 +23,18 @@ public class ShowUnregisteredHypercam : EffectBase
     private static void ExecuteTask(int durationMs)
     {
         Stopwatch sw = Stopwatch.StartNew();
-        while (sw.Elapsed.TotalMilliseconds < durationMs)
+        try
         {
-            UnregisteredHypercam.ShowOverlay("Unregistered HyperCam 2");
-            Task.Delay(1);
+            while (sw.Elapsed.TotalMilliseconds < durationMs)
+            {
+                UnregisteredHypercam.ShowOverlay("Unregistered HyperCam 2");
+                Task.Delay(1);
+            }
+        }
+        finally
+        {
+            UnregisteredHypercam.ClearOverlay();
         }
 
-        UnregisteredHypercam.ClearOverlay();
     }
 }

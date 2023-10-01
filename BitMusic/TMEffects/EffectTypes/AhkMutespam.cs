@@ -9,20 +9,21 @@ public class AhkMutespam : EffectBase
     public int MuteDurationMs { get; }
     public int UnmuteDurationMs { get; }
 
-    public AhkMutespam(string displayName, bool enabled, uint weight, int activeTimeMs, int muteDurationMs = 150, int unmuteDurationMs = 50) :
-        base(displayName, enabled, weight)
+    public AhkMutespam(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight, int activeTimeMs,
+        int muteDurationMs = 150, int unmuteDurationMs = 50) :
+        base(settingsHandler, displayName, enabled, weight)
     {
         ActiveTimeMs = activeTimeMs;
         MuteDurationMs = muteDurationMs;
         UnmuteDurationMs = unmuteDurationMs;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(MuteDurationMs + UnmuteDurationMs));
 
         string code = $$"""
-                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}
                         Loop, {{repeatCount}} {
                             SoundSet, +1,, Mute
                             Sleep, {{MuteDurationMs}}

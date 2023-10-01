@@ -12,18 +12,18 @@ public class AhkTooltip : EffectBase
     public int TimeBetweenJumpsMs { get; }
     public int Jumps { get; }
 
-    public AhkTooltip(string displayName, bool enabled, uint weight, string text, int timeBetweenJumpsMs, int jumps) :
-        base(displayName, enabled, weight)
+    public AhkTooltip(SettingsHandler settingsHandler, string displayName, bool enabled, uint weight, string text,
+        int timeBetweenJumpsMs, int jumps) : base(settingsHandler, displayName, enabled, weight)
     {
         Text = text;
         TimeBetweenJumpsMs = timeBetweenJumpsMs;
         Jumps = jumps;
     }
 
-    public override void Execute(XmlTmSettings tmSettings)
+    public override void Execute()
     {
         string code = $$"""
-                        #IfWinActive ahk_exe {{tmSettings.ProcessName}}"
+                        #IfWinActive ahk_exe {{TmSettings.ProcessName}}"
                         Loop, {{Jumps}} {
                             Random, xOffset, -300, 300
                             Random, yOffset, -300, 300
