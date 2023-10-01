@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -18,7 +18,7 @@ public class AhkMutespam : EffectBase
         UnmuteDurationMs = unmuteDurationMs;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(MuteDurationMs + UnmuteDurationMs));
 
@@ -32,6 +32,6 @@ public class AhkMutespam : EffectBase
                         }
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

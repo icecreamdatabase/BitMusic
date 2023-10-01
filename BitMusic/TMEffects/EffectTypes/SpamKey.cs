@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -16,7 +16,7 @@ public class SpamKey : HoldKey
         ReleaseTimeMs = releaseTimeMs;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + ReleaseTimeMs));
 
@@ -30,6 +30,6 @@ public class SpamKey : HoldKey
                         }
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

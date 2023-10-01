@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using BitMusic.FileWriters;
+using BitMusic.Helper;
 using BitMusic.Settings;
 using BitMusic.TMEffects;
 using BitMusic.TMEffects.EffectTypes;
@@ -37,12 +39,9 @@ public class TmEffectsViewModel : ObservableRecipient
         set => SetProperty(ref _settingsMainDisplayNumber, value);
     }
 
-    private ObservableCollection<EffectBase> _effectList;
-
-    public ObservableCollection<EffectBase> EffectList
+    public ReadOnlyObservableCollection<EffectBase> EffectList
     {
-        get => _effectList;
-        private set => SetProperty(ref _effectList, value);
+        get => EffectsHandler.EffectList;
     }
 
     #endregion
@@ -50,16 +49,18 @@ public class TmEffectsViewModel : ObservableRecipient
     #region Properties and Fields
 
     private readonly BitMusicViewModel _bitMusicViewModel;
+    public readonly EffectsHandler EffectsHandler;
 
     #endregion
 
     #region Constructor and Overrides
 
-    public TmEffectsViewModel(BitMusicViewModel bitMusicViewModel, SettingsHandler settingsHandler)
+    public TmEffectsViewModel(BitMusicViewModel bitMusicViewModel, SettingsHandler settingsHandler, 
+        EffectsFileWriter effectsFileWriter, TextBoxLogger textBoxLogger)
     {
         _bitMusicViewModel = bitMusicViewModel;
-        _effectList = new ObservableCollection<EffectBase>(EffectsHandler.GetDefaultEffects(settingsHandler));
-        foreach (EffectBase effectBase in _effectList)
+        EffectsHandler = new EffectsHandler(settingsHandler, effectsFileWriter, textBoxLogger);
+        foreach (EffectBase effectBase in EffectList)
         {
             effectBase.PropertyChanged += (_, args) => OnPropertyChanged(args);
         }
@@ -84,7 +85,7 @@ public class TmEffectsViewModel : ObservableRecipient
 
         foreach (XmlEffectSetting effectSetting in settingsHandler.ActiveSettings.TmSettings.EffectSettings)
         {
-            EffectBase? effect = _effectList.FirstOrDefault(effect =>
+            EffectBase? effect = EffectList.FirstOrDefault(effect =>
                 string.Equals(effect.DisplayName, effectSetting.DisplayName, StringComparison.OrdinalIgnoreCase)
             );
 
@@ -104,7 +105,7 @@ public class TmEffectsViewModel : ObservableRecipient
         settingsHandler.ActiveSettings.TmSettings.MainDisplayNumber = SettingsMainDisplayNumber;
 
         settingsHandler.ActiveSettings.TmSettings.EffectSettings.Clear();
-        foreach (EffectBase effectBase in _effectList)
+        foreach (EffectBase effectBase in EffectList)
         {
             settingsHandler.ActiveSettings.TmSettings.EffectSettings.Add(new XmlEffectSetting(effectBase));
         }

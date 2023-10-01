@@ -5,8 +5,6 @@ using BitMusic.Helper;
 using BitMusic.IrcBot.Bot;
 using BitMusic.IrcBot.Irc.DataTypes.FromTwitch;
 using BitMusic.Settings;
-using BitMusic.TMEffects;
-using BitMusic.TMEffects.EffectTypes;
 using BitMusic.ViewModel;
 
 namespace BitMusic;
@@ -50,7 +48,7 @@ public class BitHandler
         if (ircPrivMsg.UserId == 38949074 && ircPrivMsg.Message.StartsWith("!tmtest"))
         {
 #if DEBUG
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
 #endif
             TmEffectsHandling((int)_settingsHandler.ActiveSettings.TmSettings.BitAmount, ircPrivMsg.UserName);
         }
@@ -75,14 +73,7 @@ public class BitHandler
         if (bits != _settingsHandler.ActiveSettings.TmSettings.BitAmount)
             return;
 
-        EffectBase? effect = _bitMusicViewModel.TmEffectsViewModel.EffectList.ExecuteRandomEffectByWeight();
-        if (effect != null)
-        {
-            _effectsFileWriter.AddNewEffect(effect, userNameWhoTriggeredTheEffect);
-            _textBoxLogger.WriteLine(effect.GetConsoleOutput());
-        }
-        else
-            _textBoxLogger.WriteLine("📻 No TM Effects enabled");
+        _bitMusicViewModel.TmEffectsViewModel.EffectsHandler.ExecuteRandom(userNameWhoTriggeredTheEffect);
     }
 
     private void MusicHandling(int bits)

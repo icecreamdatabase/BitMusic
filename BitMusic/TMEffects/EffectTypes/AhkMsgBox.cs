@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -13,13 +13,13 @@ public class AhkMsgBox : EffectBase
         Text = text;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         string code = $$"""
                         #IfWinActive ahk_exe {{TmSettings.ProcessName}}"
                         MsgBox, {{Text}}
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

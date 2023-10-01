@@ -8,7 +8,7 @@ public class DummyEffect : EffectBase
     {
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
     }
 }

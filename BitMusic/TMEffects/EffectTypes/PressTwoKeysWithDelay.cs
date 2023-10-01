@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -16,7 +16,7 @@ public class PressTwoKeysWithDelay : PressKey
         DelayBetweenKeys = delayBetweenKeys;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         string code = $$"""
                         #IfWinActive ahk_exe {{TmSettings.ProcessName}}
@@ -25,6 +25,6 @@ public class PressTwoKeysWithDelay : PressKey
                         Send , {{{AhkKeyCode2}}}
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

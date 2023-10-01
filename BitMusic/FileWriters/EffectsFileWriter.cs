@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using BitMusic.Helper;
 using BitMusic.TMEffects.EffectTypes;
 
@@ -13,7 +12,8 @@ public class EffectsFileWriter
     private readonly TextBoxLogger _textBoxLogger;
     private readonly FileInfo _outputFileInfo;
 
-    private List<(EffectBase effect, string userNameWhoTriggeredTheEffect)> _activeEffects = new();
+    private readonly List<(EffectBase effect, string userNameWhoTriggeredTheEffect)> _activeEffects = new();
+    private readonly object _activeEffectsLock = new();
 
     public EffectsFileWriter(TextBoxLogger textBoxLogger, FileInfo outputFileInfo)
     {
@@ -25,19 +25,20 @@ public class EffectsFileWriter
 
     public void AddNewEffect(EffectBase effect, string userNameWhoTriggeredTheEffect)
     {
-        //File.WriteAllText(_outputFileInfo.FullName, line);
-
-        _activeEffects.Add((effect, userNameWhoTriggeredTheEffect));
-        UpdateText();
-        Task.Run(() => EffectRunner(effect, userNameWhoTriggeredTheEffect));
+        lock (_activeEffectsLock)
+        {
+            _activeEffects.Add((effect, userNameWhoTriggeredTheEffect));
+            UpdateText();
+        }
     }
 
-
-    private async void EffectRunner(EffectBase effectBase, string userNameWhoTriggeredTheEffect)
+    public void RemoveEffect(EffectBase effect, string userNameWhoTriggeredTheEffect)
     {
-        await Task.Delay(5000);
-        _activeEffects.Remove((effectBase, userNameWhoTriggeredTheEffect));
-        UpdateText();
+        lock (_activeEffectsLock)
+        {
+            _activeEffects.Remove((effect, userNameWhoTriggeredTheEffect));
+            UpdateText();
+        }
     }
 
     private void UpdateText()

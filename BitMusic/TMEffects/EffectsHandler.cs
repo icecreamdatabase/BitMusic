@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using BitMusic.FileWriters;
+using BitMusic.Helper;
 using BitMusic.Settings;
 using BitMusic.TMEffects.EffectHelper;
 using BitMusic.TMEffects.EffectTypes;
 
 namespace BitMusic.TMEffects;
 
-public static class EffectsHandler
+public class EffectsHandler
 {
     #region Effects
 
-    public static IEnumerable<EffectBase> GetDefaultEffects(SettingsHandler s) => new List<EffectBase>
+    private static IEnumerable<EffectBase> GetDefaultEffects(SettingsHandler s) => new List<EffectBase>
     {
         //@formatter:off
         new PressKey(s, "Give up", true, 1, "Del"),
@@ -60,14 +64,39 @@ public static class EffectsHandler
 
     #endregion
 
-    #region Properties and Methods
+    #region Properties
 
     private static readonly Random WeightRandom = new();
 
-    private static long TotalWeight(this IEnumerable<EffectBase> effects) =>
-        effects.Where(effect => effect.Enabled).Sum(effect => effect.Weight);
+    private readonly EffectsFileWriter _effectsFileWriter;
+    private readonly TextBoxLogger _textBoxLogger;
 
-    private static EffectBase? _previousEffect = null;
+    public readonly ReadOnlyObservableCollection<EffectBase> EffectList;
+
+    private EffectBase? _previousEffect = null;
+
+    #endregion
+
+    #region constructor
+
+    public EffectsHandler(SettingsHandler settingsHandler, EffectsFileWriter effectsFileWriter,
+        TextBoxLogger textBoxLogger)
+    {
+        _effectsFileWriter = effectsFileWriter;
+        _textBoxLogger = textBoxLogger;
+        EffectList = new ReadOnlyObservableCollection<EffectBase>(
+            new ObservableCollection<EffectBase>(
+                GetDefaultEffects(settingsHandler)
+            )
+        );
+    }
+
+    #endregion
+
+    #region Methods
+
+    private static long GetTotalWeight(IEnumerable<EffectBase> effects) =>
+        effects.Where(effect => effect.Enabled).Sum(effect => effect.Weight);
 
     /// <summary>
     /// Weighted random selection<br/>
@@ -75,15 +104,16 @@ public static class EffectsHandler
     /// https://stackoverflow.com/questions/56692/random-weighted-choice
     /// </summary>
     /// <returns></returns>
-    private static EffectBase? SelectRandomEffectByWeight(this IEnumerable<EffectBase> effects)
+    private EffectBase? SelectRandomEffectByWeight()
     {
-        List<EffectBase> filteredEffects = effects
+        List<EffectBase> filteredEffects = EffectList
+            .Where(effect => !effect.Active)
             // TODO: Don't allow the same effect twice in a row
             .Except(_previousEffect != null ? new[] { _previousEffect } : Array.Empty<EffectBase>())
             .Where(effect => effect.Enabled)
             .ToList();
 
-        long randomIndexForWeightCalc = WeightRandom.NextInt64(0, filteredEffects.TotalWeight());
+        long randomIndexForWeightCalc = WeightRandom.NextInt64(0, GetTotalWeight(filteredEffects));
 
         foreach (EffectBase effect in filteredEffects)
         {
@@ -101,16 +131,21 @@ public static class EffectsHandler
         return null;
     }
 
-    public static EffectBase? ExecuteRandomEffectByWeight(this IEnumerable<EffectBase> effects)
+    public void ExecuteRandom(string triggerUserName) => Task.Run(() => ExecuteTask(triggerUserName));
+
+    private void ExecuteTask(string userNameWhoTriggeredTheEffect)
     {
-        EffectBase? randomEffect = SelectRandomEffectByWeight(effects);
+        EffectBase? effect = SelectRandomEffectByWeight();
 
-        // Do nothing if have no effects
-        if (randomEffect == null)
-            return null;
-
-        randomEffect.Execute();
-        return randomEffect;
+        if (effect != null)
+        {
+            _textBoxLogger.WriteLine(effect.GetConsoleOutput());
+            _effectsFileWriter.AddNewEffect(effect, userNameWhoTriggeredTheEffect);
+            effect.Execute();
+            _effectsFileWriter.RemoveEffect(effect, userNameWhoTriggeredTheEffect);
+        }
+        else
+            _textBoxLogger.WriteLine("📻 No TM Effects enabled or all effects already active.");
     }
 
     #endregion

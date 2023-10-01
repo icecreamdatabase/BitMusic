@@ -17,7 +17,7 @@ public class DisplayRotationEffect : EffectBase
         DurationMs = durationMs;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         Task.Run(() => DisplayRotationTask(TmSettings.MainDisplayNumber, Orientation, DurationMs));
     }

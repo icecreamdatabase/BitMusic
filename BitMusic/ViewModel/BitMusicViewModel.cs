@@ -56,7 +56,7 @@ public class BitMusicViewModel : ObservableRecipient
 
         MainTabViewModel = new MainTabViewModel(this, _textBoxLogger, _obsFileWriter, _musicPlayer, _botInstance);
         MusicSettingsViewModel = new MusicSettingsViewModel(this);
-        TmEffectsViewModel = new TmEffectsViewModel(this, _settingsHandler);
+        TmEffectsViewModel = new TmEffectsViewModel(this, _settingsHandler, _effectsFileWriter, _textBoxLogger);
 
         LoadSettings();
 

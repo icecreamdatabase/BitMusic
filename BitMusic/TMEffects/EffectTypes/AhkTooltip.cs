@@ -1,6 +1,6 @@
 ﻿using System;
+using AutoHotkey.Interop;
 using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -20,7 +20,7 @@ public class AhkTooltip : EffectBase
         Jumps = jumps;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         string code = $$"""
                         #IfWinActive ahk_exe {{TmSettings.ProcessName}}"
@@ -33,6 +33,6 @@ public class AhkTooltip : EffectBase
                         ToolTip
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

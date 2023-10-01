@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -18,7 +18,7 @@ public class SpamTwoKeys : HoldKey
         HoldTimeMsAhkKeyCode2 = holdTimeMsAhkKeyCode2;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         int repeatCount = (int)(ActiveTimeMs / (float)(HoldTimeMs + HoldTimeMsAhkKeyCode2 + 5 + 5));
 
@@ -34,6 +34,6 @@ public class SpamTwoKeys : HoldKey
                         }
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

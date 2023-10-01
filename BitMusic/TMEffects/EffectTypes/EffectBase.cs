@@ -8,20 +8,22 @@ namespace BitMusic.TMEffects.EffectTypes;
 public abstract class EffectBase : ObservableRecipient
 {
     private IRelayCommand? _testButton;
-    public IRelayCommand TestButton => _testButton ??= new RelayCommand(ExecuteWithDelay);
+    public IRelayCommand TestButton => _testButton ??= new RelayCommand(TestWithDelay);
 
     private string _testButtonText = "Test";
 
     public string TestButtonText
     {
         get => _testButtonText;
-        set => SetProperty(ref _testButtonText, value);
+        private set => SetProperty(ref _testButtonText, value);
     }
 
     private readonly SettingsHandler _settingsHandler;
     private protected XmlTmSettings TmSettings => _settingsHandler.ActiveSettings.TmSettings;
 
     public string DisplayName { get; }
+
+    public bool Active { get; private set; }
 
     private bool _enabled;
 
@@ -52,11 +54,24 @@ public abstract class EffectBase : ObservableRecipient
         return $"✨ {DisplayName}";
     }
 
-    public abstract void Execute();
+    public void Execute()
+    {
+        Active = true;
+        try
+        {
+            ExecuteRaw();
+        }
+        finally
+        {
+            Active = false;
+        }
+    }
 
-    private void ExecuteWithDelay() => Task.Run(ExecuteWithDelayAsync);
+    private protected abstract void ExecuteRaw();
 
-    private async void ExecuteWithDelayAsync()
+    private void TestWithDelay() => Task.Run(TestWithDelayAsync);
+
+    private async void TestWithDelayAsync()
     {
         for (int i = 5; i >= 1; i--)
         {
@@ -66,8 +81,7 @@ public abstract class EffectBase : ObservableRecipient
 
         TestButtonText = "Running";
 
-        Execute();
-        await Task.Delay(2000);
+        ExecuteRaw();
         TestButtonText = "Test";
     }
 }

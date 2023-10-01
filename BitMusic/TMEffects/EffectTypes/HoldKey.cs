@@ -1,5 +1,5 @@
-﻿using BitMusic.Settings;
-using BitMusic.TMEffects.EffectHelper;
+﻿using AutoHotkey.Interop;
+using BitMusic.Settings;
 
 namespace BitMusic.TMEffects.EffectTypes;
 
@@ -13,7 +13,7 @@ public class HoldKey : PressKey
         ActiveTimeMs = activeTimeMs;
     }
 
-    public override void Execute()
+    private protected override void ExecuteRaw()
     {
         string code = $$"""
                         #IfWinActive ahk_exe {{TmSettings.ProcessName}}
@@ -22,6 +22,6 @@ public class HoldKey : PressKey
                         Send , {{{AhkKeyCode}} up}
                         """;
 
-        AhkHelper.ExecuteAhkScript(code);
+        AutoHotkeyEngine.Instance.ExecRaw(code);
     }
 }

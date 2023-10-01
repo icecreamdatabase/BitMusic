@@ -15,17 +15,12 @@ public class ShowUnregisteredHypercam : EffectBase
         _durationMs = durationMs;
     }
 
-    public override void Execute()
-    {
-        Task.Run(() => ExecuteTask(_durationMs));
-    }
-
-    private static void ExecuteTask(int durationMs)
+    private protected override void ExecuteRaw()
     {
         Stopwatch sw = Stopwatch.StartNew();
         try
         {
-            while (sw.Elapsed.TotalMilliseconds < durationMs)
+            while (sw.Elapsed.TotalMilliseconds < _durationMs)
             {
                 UnregisteredHypercam.ShowOverlay("Unregistered HyperCam 2");
                 Task.Delay(1);
@@ -35,6 +30,5 @@ public class ShowUnregisteredHypercam : EffectBase
         {
             UnregisteredHypercam.ClearOverlay();
         }
-
     }
 }
